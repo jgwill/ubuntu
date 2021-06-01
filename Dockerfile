@@ -29,8 +29,9 @@ RUN apt -y install sudo
 
 USER root
 
-RUN apt update
+#RUN apt update
 
 
 RUN apt install -y xterm
+RUN apt remove python3 python3-pip -y
 
