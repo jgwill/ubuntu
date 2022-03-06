@@ -33,4 +33,5 @@ RUN apt update
 
 
 RUN apt install -y xterm
-
+RUN apt install -y gnupg2
+RUN apt install -y curl apt-transport-https
