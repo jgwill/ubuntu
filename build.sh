@@ -1,3 +1,8 @@
-docker build -t jgwill/ubuntu:2105 .
-docker push jgwill/ubuntu:2105
+. _env.sh
+docker build -t $dockertag .
+docker push $dockertag
+
+export tlidtag=$(tlid)
+docker build -t jgwill/ubuntu:$tlidtag .
+docker push jgwill/ubuntu:$tlidtag
 
