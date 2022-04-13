@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:16.04
 
 RUN apt update && apt-get upgrade -y
 
@@ -33,4 +33,5 @@ RUN apt update
 
 
 RUN apt install -y xterm
-
+RUN apt install -y gnupg2
+RUN apt install -y curl apt-transport-https
