@@ -1,21 +1,16 @@
 FROM ubuntu:20.04
 
-RUN apt update && apt-get upgrade -y
+RUN apt update && \
+ 	apt upgrade -y && \
+  apt -y install vim git curl && \
+  apt install -y wget bzip2 && \
+  apt install -y sudo && \
+  DEBIAN_FRONTEND=noninteractive TZ="America/New_York" apt-get -y install tzdata && \
+	apt clean && \
+	rm -rf /var/lib/apt/lists/*
 
 
-RUN apt -y install vim
-RUN apt -y install git
 
-
-RUN apt install -y curl
-
-
-# Adding wget and bzip2
-RUN apt install -y wget bzip2
-
-
-# Add sudo
-RUN apt -y install sudo
 
 # Add user ubuntu with no password, add to sudo group
 #@urir http://www.science.smith.edu/dftwiki/index.php/Tutorial:_Docker_Anaconda_Python_--_4
@@ -29,8 +24,10 @@ RUN apt -y install sudo
 
 USER root
 
-RUN apt update
 
+#RUN sudo echo "America/New_York" > /etc/timezone
+#RUN sudo dpkg-reconfigure -f noninteractive tzdata
 
-RUN apt install -y xterm
+#RUN apt install -y xterm
 
+#RUN DEBIAN_FRONTEND=noninteractive TZ="America/New_York" apt-get -y install tzdata
