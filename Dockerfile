@@ -25,6 +25,11 @@ RUN apt update && \
 USER root
 
 
+#@STCGoal Compatible with dkbuilduser (using UID 1000)
+#@STCIssue Generalize using dkrun "whoami" in the dkbuilduser
+RUN usermod -u 1002 ubuntu && chown -R ubuntu.ubuntu /home/ubuntu
+
+
 #RUN sudo echo "America/New_York" > /etc/timezone
 #RUN sudo dpkg-reconfigure -f noninteractive tzdata
 
