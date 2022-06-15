@@ -1,21 +1,41 @@
 FROM ubuntu:16.04
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt update && apt-get upgrade -y
+  # DEBIAN_FRONTEND=noninteractive TZ="America/New_York" apt-get -y install tzdata && \
+RUN apt update && \
+ 	apt upgrade -y && \
+  DEBIAN_FRONTEND=noninteractive  apt -y install vim git curl && \
+  apt install -y wget bzip2 && \
+  apt install -y sudo && \
+  apt install -y xterm && \
+  apt install -y gnupg2 && \
+  apt install -y curl apt-transport-https && \
+  apt install ffmpeg libimage-exiftool-perl -y && \
+	apt clean && \
+	rm -rf /var/lib/apt/lists/*
 
+# install supporting packages
+RUN apt-get update && \
+    apt-get install -y apt-transport-https \
+                       curl \
+                       supervisor \
+                       fakechroot \
+                       locales \
+                       iptables \
+                       sudo \
+                       wget \
+                       curl \
+                       zip \
+                       unzip \
+                       make \
+                       bzip2 \
+                       m4 \
+                       apt-transport-https \
+                       tzdata \
+                       libnuma-dev \
+                       libsss-nss-idmap-dev \
+                       software-properties-common
 
-RUN apt -y install vim
-RUN apt -y install git
-
-
-RUN apt install -y curl
-
-
-# Adding wget and bzip2
-RUN apt install -y wget bzip2
-
-
-# Add sudo
-RUN apt -y install sudo
 
 # Add user ubuntu with no password, add to sudo group
 #@urir http://www.science.smith.edu/dftwiki/index.php/Tutorial:_Docker_Anaconda_Python_--_4
@@ -29,9 +49,6 @@ RUN apt -y install sudo
 
 USER root
 
-RUN apt update
+#RUN apt update
 
 
-RUN apt install -y xterm
-RUN apt install -y gnupg2
-RUN apt install -y curl apt-transport-https
