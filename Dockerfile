@@ -1,11 +1,14 @@
 FROM ubuntu:20.04
+ENV DEBIAN_FRONTEND=noninteractive
 
+  # DEBIAN_FRONTEND=noninteractive TZ="America/New_York" apt-get -y install tzdata && \
 RUN apt update && \
+  DEBIAN_FRONTEND=noninteractive  apt-get -y install tzdata && \
  	apt upgrade -y && \
   apt -y install vim git curl && \
   apt install -y wget bzip2 && \
   apt install -y sudo && \
-  DEBIAN_FRONTEND=noninteractive TZ="America/New_York" apt-get -y install tzdata && \
+  apt install ffmpeg libimage-exiftool-perl -y && \
 	apt clean && \
 	rm -rf /var/lib/apt/lists/*
 
