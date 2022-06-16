@@ -37,6 +37,32 @@ RUN apt-get update && \
                        software-properties-common
 
 
+#Remove python 3.5
+RUN apt remove python3.5 -y && \
+      apt remove python2.7 -y && \
+      apt autoremove -y
+
+
+# BUild python 3.7
+
+# Inst build essential
+RUN apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev && \
+  apt clean && \
+	rm -rf /var/lib/apt/lists/*
+
+WORKDIR /tmp
+RUN wget https://www.python.org/ftp/python/3.7.1/Python-3.7.1.tgz && \
+    tar -xf Python-3.7.1.tgz && \
+	cd Python-3.7.1 && ./configure --enable-optimizations && \
+ 	make -j 8 && make altinstall && cd .. && rm -rf Python-3.7.1 && rm Python-3.7.1.tgz
+
+# Linking regular python cmd so python and python3 cmd will works
+RUN  ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3 && \
+  ln -sf /usr/local/bin/python3.7 /usr/local/bin/python
+
+WORKDIR /
+
+
 # Add user ubuntu with no password, add to sudo group
 #@urir http://www.science.smith.edu/dftwiki/index.php/Tutorial:_Docker_Anaconda_Python_--_4
 #RUN adduser --disabled-password --gecos '' ubuntu
