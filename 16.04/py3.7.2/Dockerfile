@@ -49,7 +49,7 @@ RUN apt remove python3.5 -y && \
 RUN apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev && \
   apt clean && \
 	rm -rf /var/lib/apt/lists/*
-#RUN apt update && apt install -y liblzma-dev lzma
+RUN apt update && apt install -y liblzma-dev lzma
 
 WORKDIR /tmp
 RUN wget https://www.python.org/ftp/python/3.7.2/Python-3.7.2.tgz && \
@@ -57,11 +57,22 @@ RUN wget https://www.python.org/ftp/python/3.7.2/Python-3.7.2.tgz && \
 	cd Python-3.7.2 && ./configure --enable-optimizations && \
  	make -j 8 && make altinstall && cd .. && rm -rf Python-3.7.2 && rm Python-3.7.2.tgz
 
+
+RUN pip3.7 install --upgrade pip
+
 # Linking regular python cmd so python and python3 cmd will works
 RUN  ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3 && \
   ln -sf /usr/local/bin/python3.7 /usr/local/bin/python && \
-  ln -sf /usr/local/bin/pip3.7 /usr/local/bin/pip && \
-  ln -sf /usr/local/bin/pip3.7 /usr/local/bin/pip
+  ln -sf /usr/local/bin/pip3.10 /usr/local/bin/pip 
+  
+#RUN pip3.10 install setuptools
+RUN apt update
+RUN apt install make -y
+
+# RUN apt-get install -y gfortran libopenblas-dev liblapack-dev
+# RUN apt-get install -y pkg-config
+# # RUN apt-get install -y wget
+# RUN apt-get install -y python3-setuptools
 
 WORKDIR /
 
