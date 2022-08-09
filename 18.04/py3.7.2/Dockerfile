@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:16.04
 ENV DEBIAN_FRONTEND=noninteractive
 
   # DEBIAN_FRONTEND=noninteractive TZ="America/New_York" apt-get -y install tzdata && \
@@ -58,13 +58,14 @@ RUN wget https://www.python.org/ftp/python/3.7.2/Python-3.7.2.tgz && \
  	make -j 8 && make altinstall && cd .. && rm -rf Python-3.7.2 && rm Python-3.7.2.tgz
 
 
+RUN pip3.7 install --upgrade pip
 
 # Linking regular python cmd so python and python3 cmd will works
 RUN  ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3 && \
   ln -sf /usr/local/bin/python3.7 /usr/local/bin/python && \
-  ln -sf /usr/local/bin/pip3 /usr/local/bin/pip 
+  ln -sf /usr/local/bin/pip3.10 /usr/local/bin/pip 
   
-#RUN pip3 install setuptools
+#RUN pip3.10 install setuptools
 RUN apt update
 RUN apt install make -y
 
@@ -90,6 +91,18 @@ RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/loc
 
 RUN pip install --upgrade pip
 
+# Migrated from the ./ml
+RUN apt install -y gfortran libopenblas-dev liblapack-dev
+RUN apt install -y pkg-config
+# migrated content from ./ml (which was further after pip installs)
+RUN apt install libboost-all-dev -y
+RUN apt install cmake make -y
+
+# Some more info on pyodbc
+RUN apt install  unixodbc-dev -y
+RUN pip install  pyodbc
+
+RUN apt install lsb-release -y
 USER root
 
 #RUN apt update
