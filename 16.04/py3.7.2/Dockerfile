@@ -86,6 +86,10 @@ WORKDIR /
 #WORKDIR /home/ubuntu/
 #RUN chmod a+rwx /home/ubuntu/
 
+#Damn TZ issue
+RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
+
+RUN pip install --upgrade pip
 
 USER root
 
