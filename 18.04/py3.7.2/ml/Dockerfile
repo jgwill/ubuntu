@@ -1,4 +1,4 @@
-FROM jgwill/ubuntu:16.04-py3.7.2-lzma
+FROM jgwill/ubuntu:18.04-py3.7.2-lzma
 
 #USER ubuntu
 

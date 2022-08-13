@@ -91,6 +91,18 @@ RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/loc
 
 RUN pip install --upgrade pip
 
+# Migrated from the ./ml
+RUN apt install -y gfortran libopenblas-dev liblapack-dev
+RUN apt install -y pkg-config
+# migrated content from ./ml (which was further after pip installs)
+RUN apt install libboost-all-dev -y
+RUN apt install cmake make -y
+
+# Some more info on pyodbc
+RUN apt install  unixodbc-dev -y
+RUN pip install  pyodbc
+
+RUN apt install lsb-release -y
 USER root
 
 #RUN apt update
