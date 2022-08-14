@@ -1,0 +1,14 @@
+    1  pip install sqlmlutils
+    2  apt updat
+    3  apt update
+    4  apt install gcc -y
+    5  apt install pyodbc -y
+    6  apt list *odbc*
+    7  python --version
+    8  apt install python3-pyodbc
+    9  python --version
+   10  python3 --version
+   11  history
+   12  ls /work/
+   13  history | /work/_history_pyodbc__220809
+   14  history > /work/_history_pyodbc__220809
