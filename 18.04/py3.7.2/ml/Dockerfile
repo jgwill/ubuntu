@@ -25,6 +25,7 @@ RUN pip3.7 install pandas
 RUN pip3.7 install pandas_ta
 RUN pip3.7 install patsy
 RUN pip3.7 install statsmodels
+RUN pip3.7 install --upgrade pip
 RUN apt install -y libfreetype6-dev; \
 	pip3.7 install matplotlib
 RUN pip3.7 install ws4py
@@ -33,7 +34,6 @@ RUN pip3.7 install tweepy
 RUN pip3.7 install cython
 RUN pip3.7 install retrying
 
-#RUN pip install --upgrade pip
 #RUN pip3.7 install setuptools
 #WORKDIR /tmp
 #COPY pyodbc-4.0.32-cp37-cp37m-win_amd64.whl .

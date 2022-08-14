@@ -1,52 +1,54 @@
-FROM ubuntu:18.04
+FROM jgwill/ubuntu:18.04
 ENV DEBIAN_FRONTEND=noninteractive
 
-  # DEBIAN_FRONTEND=noninteractive TZ="America/New_York" apt-get -y install tzdata && \
-RUN apt update && \
- 	apt upgrade -y && \
-  DEBIAN_FRONTEND=noninteractive  apt -y install vim git curl && \
-  apt install -y wget bzip2 && \
-  apt install -y sudo && \
-  apt install -y xterm && \
-  apt install -y gnupg2 && \
-  apt install -y curl apt-transport-https && \
-  apt install ffmpeg libimage-exiftool-perl -y && \
-	apt clean && \
-	rm -rf /var/lib/apt/lists/*
 
-# install supporting packages
-RUN apt-get update && \
-    apt-get install -y apt-transport-https \
-                       curl \
-                       supervisor \
-                       fakechroot \
-                       locales \
-                       iptables \
-                       sudo \
-                       wget \
-                       curl \
-                       zip \
-                       unzip \
-                       make \
-                       bzip2 \
-                       m4 \
-                       apt-transport-https \
-                       tzdata \
-                       libnuma-dev \
-                       libsss-nss-idmap-dev \
-                       software-properties-common
+# Moved to jgwill/ubuntu:18.04
+# DEBIAN_FRONTEND=noninteractive TZ="America/New_York" apt-get -y install tzdata && \
+# RUN apt update && \
+#  	apt upgrade -y && \
+#   DEBIAN_FRONTEND=noninteractive  apt -y install vim git curl && \
+#   apt install -y wget bzip2 && \
+#   apt install -y sudo && \
+#   apt install -y xterm && \
+#   apt install -y gnupg2 && \
+#   apt install -y curl apt-transport-https && \
+#   apt install ffmpeg libimage-exiftool-perl -y && \
+# 	apt clean && \
+# 	rm -rf /var/lib/apt/lists/*
+
+# # install supporting packages
+# RUN apt-get update && \
+#     apt-get install -y apt-transport-https \
+#                        curl \
+#                        supervisor \
+#                        fakechroot \
+#                        locales \
+#                        iptables \
+#                        sudo \
+#                        wget \
+#                        curl \
+#                        zip \
+#                        unzip \
+#                        make \
+#                        bzip2 \
+#                        m4 \
+#                        apt-transport-https \
+#                        tzdata \
+#                        libnuma-dev \
+#                        libsss-nss-idmap-dev \
+#                        software-properties-common
 
 
-#Remove python 3.5
-RUN apt remove python3.5 -y && \
-      apt remove python2.7 -y && \
-      apt autoremove -y
+# #Remove python 3.5
+# RUN apt remove python3.5 -y && \
+#       apt remove python2.7 -y && \
+#       apt autoremove -y
 
 
 # BUild python 3.7
-
+RUN apt update
 # Inst build essential
-RUN apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev && \
+RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev && \
   apt clean && \
 	rm -rf /var/lib/apt/lists/*
 RUN apt update && apt install -y liblzma-dev lzma
@@ -103,6 +105,9 @@ RUN apt install  unixodbc-dev -y
 RUN pip3.7 install  pyodbc
 
 RUN apt install lsb-release -y
+
+RUN pip3.7 install --upgrade pip
+
 USER root
 
 #RUN apt update

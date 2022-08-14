@@ -1,15 +1,37 @@
 FROM ubuntu:18.04
 
+ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && \
-  DEBIAN_FRONTEND=noninteractive TZ="America/New_York" apt-get -y install tzdata && \
- 	apt upgrade -y && \
-  apt -y install vim git curl && \
-  apt install -y wget bzip2 && \
-  apt install -y sudo && \
-  apt install ffmpeg libimage-exiftool-perl -y && \
+ 	apt upgrade -y
+
+RUN  DEBIAN_FRONTEND=noninteractive  apt -y install \
+vim git curl zip unzip \
+   wget bzip2\
+   sudo \
+    xterm  \
+   gnupg2  \
+    apt-transport-https  \
+   ffmpeg libimage-exiftool-perl 
+RUN  DEBIAN_FRONTEND=noninteractive  apt -y install \
+     supervisor \
+                       fakechroot \
+                       locales \
+                       iptables \
+                       make \
+                       m4 \
+                       tzdata \
+                       libnuma-dev \
+                       libsss-nss-idmap-dev \
+                       software-properties-common && \
 	apt clean && \
 	rm -rf /var/lib/apt/lists/*
+
+
+#Remove python 3.5
+RUN apt remove python3.5 -y && \
+      apt remove python2.7 -y && \
+      apt autoremove -y
 
 
 USER root
