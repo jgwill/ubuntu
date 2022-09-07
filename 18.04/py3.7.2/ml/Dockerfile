@@ -87,5 +87,45 @@ RUN pip3.7 install sklearn
 # WINDOWS ODBC: https://docs.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16
 
 RUN pip3.7 install sqlmlutils
+
+# From Movie clustering
+#RUN pip3.7 install seaborn surprise
+#RUN pip3.7 install ast
+RUN pip3.7 install --upgrade pip
+RUN pip3.10 install nltk
+RUN pip3.10 install seaborn
+RUN pip3.10 install surprise
+
+RUN python --version
+
+RUN pip3.10 install pymssql
+RUN pip3.10 install forexconnect
+
+RUN pip3.7 install pyalgotrade
+
+
 #USER root
+#RUN apt update
+RUN curl -sL https://deb.nodesource.com/setup_16.x -o /tmp/nodesource_setup.sh &&   bash /tmp/nodesource_setup.sh  && \
+ apt install -y nodejs && \
+ apt clean && \
+rm -rf /var/lib/apt/lists/*
+
+
+#USER root
+
+RUN npm --version
+
+RUN npm install npm --g
+RUN npm install tlid --g
+RUN npm install droxul --g
+RUN npm install http-server --g
+
+RUN npm i node-gyp --g
+RUN npm i json2bash --g
+RUN npm install typescript --g
+RUN npm i thumbsup --g
+
+WORKDIR /work
+
 
