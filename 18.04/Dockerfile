@@ -37,7 +37,10 @@ RUN apt remove python3.5 -y && \
 USER root
 
 RUN apt update
+RUN  apt install iputils-ping net-tools -y
+RUN apt install dnsutils -y
 
+RUN apt install markdown -y
 
 #RUN apt install -y xterm
 
