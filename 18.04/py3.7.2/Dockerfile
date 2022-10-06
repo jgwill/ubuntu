@@ -107,6 +107,8 @@ RUN pip3.7 install  pyodbc
 RUN apt install lsb-release -y
 
 RUN pip3.7 install --upgrade pip
+RUN pip3.7 install urlopen
+RUN pip3.7 install colour
 
 USER root
 
