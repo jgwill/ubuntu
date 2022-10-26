@@ -29,4 +29,8 @@ RUN pip3.10 install kaleido
 #RUN pip3.10 install tensorflow
 WORKDIR /work
 
+#RUN pip3.10 install tapy
+
+RUN pip install backtrader
+RUN pip install yfinance
 

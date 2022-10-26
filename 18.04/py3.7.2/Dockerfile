@@ -109,6 +109,14 @@ RUN apt install lsb-release -y
 RUN pip3.7 install --upgrade pip
 RUN pip3.7 install urlopen
 RUN pip3.7 install colour
+RUN pip3.7 install plotly
+RUN pip3.7 install bokeh
+RUN pip3.7 install dropbox
+RUN pip3.7 install notebook ipywidgets
+#RUN pip3.7 install seaborn IN ML
+RUN pip3.7 install jupyterlab
+
+
 
 USER root
 

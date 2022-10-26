@@ -171,6 +171,8 @@ RUN $pip_cur install seaborn
 
 RUN $pip_cur install bokeh pyshp 
 RUN $pip_cur install colorcet
+RUN $pip_cur install networkx
+RUN $pip_cur install colorcet
 
 
 WORKDIR /work
