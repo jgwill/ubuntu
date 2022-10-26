@@ -14,6 +14,14 @@ FROM jgwill/ubuntu:18.04-py3.7.2-ml-lzma
 
 RUN pip3.10 install -U tfx
 
+#Required by TradingGym 2210
+RUN pip3.10 install tables
+RUN pip3.10 install networkx
+#RUN pip3.10 install trading_env
+
+
+RUN pip3.10 install --upgrade pip
+RUN pip3.10 install kaleido
 
 #@STCIssue I guess they are included in above tfx
 #RUN apt  install tensorflow-model-server -y

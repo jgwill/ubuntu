@@ -159,6 +159,20 @@ RUN $pip_cur install pandas-datareader
 #Serve notebooks
 RUN $pip_cur  install ipykernel
 
+# Code Server
+RUN curl -fsSL https://code-server.dev/install.sh | sh
+
+RUN $pip_cur install fxcmpy
+
+#221022 upgrade after mastering Python/DataPrep
+RUN $pip_cur install plotly-express
+RUN $pip_cur install seaborn
+
+
+RUN $pip_cur install bokeh pyshp 
+RUN $pip_cur install colorcet
+
+
 WORKDIR /work
 
 
