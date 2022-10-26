@@ -2,8 +2,7 @@ FROM ubuntu:16.04
 ENV DEBIAN_FRONTEND=noninteractive
 
   # DEBIAN_FRONTEND=noninteractive TZ="America/New_York" apt-get -y install tzdata && \
-RUN apt update && \
- 	apt upgrade -y && \
+RUN apt update && apt upgrade -y && \
   DEBIAN_FRONTEND=noninteractive  apt -y install vim git curl && \
   apt install -y wget bzip2 && \
   apt install -y sudo && \
