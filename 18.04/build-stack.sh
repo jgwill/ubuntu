@@ -1,0 +1,1 @@
+dkbuild && dkpush && cd py3.7.2/ &&  dkbuild && dkpush && cd ml &&   dkbuild && dkpush && cd tfx &&   dkbuild && dkpush && cdsdsodin && cd .. &&   dkbuild && dkpush && cd prod && . build-prod.sh && echo "ohoh, dkbuilduser might have worked for  SR.jgi..." || cd kada && echo "Kada is Ready for Manual BUild decause dkbuilduser still has issues" 

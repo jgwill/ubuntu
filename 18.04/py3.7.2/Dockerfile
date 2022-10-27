@@ -49,27 +49,32 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update
 # Inst build essential
 RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev && \
+	apt install -y liblzma-dev lzma && \
+apt install make -y && \
   apt clean && \
 	rm -rf /var/lib/apt/lists/*
-RUN apt update && apt install -y liblzma-dev lzma
+#RUN apt update && apt install -y liblzma-dev lzma
 
 WORKDIR /tmp
 RUN wget https://www.python.org/ftp/python/3.7.2/Python-3.7.2.tgz && \
     tar -xf Python-3.7.2.tgz && \
 	cd Python-3.7.2 && ./configure --enable-optimizations && \
- 	make -j 8 && make altinstall && cd .. && rm -rf Python-3.7.2 && rm Python-3.7.2.tgz
+ 	make -j 8 && make altinstall && cd .. && rm -rf Python-3.7.2 && rm Python-3.7.2.tgz && \
+	ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3 && \
+  ln -sf /usr/local/bin/python3.7 /usr/local/bin/python && \
+  ln -sf /usr/local/bin/pip3.10 /usr/local/bin/pip
 
 
 #RUN pip3 install --upgrade pip
 
 # Linking regular python cmd so python and python3 cmd will works
-RUN  ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3 && \
-  ln -sf /usr/local/bin/python3.7 /usr/local/bin/python && \
-  ln -sf /usr/local/bin/pip3.10 /usr/local/bin/pip 
+#RUN  ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3 && \
+#  ln -sf /usr/local/bin/python3.7 /usr/local/bin/python && \
+#  ln -sf /usr/local/bin/pip3.10 /usr/local/bin/pip 
   
 #RUN pip3.10 install setuptools
-RUN apt update
-RUN apt install make -y
+#RUN apt update
+#RUN apt install make -y
 
 # RUN apt-get install -y gfortran libopenblas-dev liblapack-dev
 # RUN apt-get install -y pkg-config
@@ -94,25 +99,23 @@ RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/loc
 
 
 # Migrated from the ./ml
-RUN apt install -y gfortran libopenblas-dev liblapack-dev
-RUN apt install -y pkg-config
-# migrated content from ./ml (which was further after pip installs)
-RUN apt install libboost-all-dev -y
-RUN apt install cmake make -y
+RUN apt update && \
+	apt install -y gfortran libopenblas-dev liblapack-dev && \
+	apt install -y pkg-config && \
+	apt install libboost-all-dev -y && \
+	apt install cmake make -y && \
+	apt install  unixodbc-dev -y
 
 # Some more info on pyodbc
-RUN apt install  unixodbc-dev -y
-RUN pip3.7 install  pyodbc
-
-RUN apt install lsb-release -y
-
+#RUN apt install  unixodbc-dev -y
 RUN pip3.7 install --upgrade pip
-RUN pip3.7 install urlopen
-RUN pip3.7 install colour
-RUN pip3.7 install plotly
-RUN pip3.7 install bokeh
-RUN pip3.7 install dropbox
-RUN pip3.7 install notebook ipywidgets
+RUN pip3.7 install  pyodbc urlopen colour plotly bokeh dropbox notebook ipywidgets
+
+
+#RUN pip3.7 install --upgrade pip
+#RUN pip3.7 install urlopen colour
+#RUN pip3.7 install plotly bokeh
+#RUN pip3.7 install dropbox notebook ipywidgets
 #RUN pip3.7 install seaborn IN ML
 RUN pip3.7 install jupyterlab
 

@@ -36,11 +36,10 @@ RUN apt remove python3.5 -y && \
 
 USER root
 
-RUN apt update
-RUN  apt install iputils-ping net-tools -y
-RUN apt install dnsutils -y
-
-RUN apt install markdown -y
+RUN apt update && apt install iputils-ping net-tools -y && \
+	apt install dnsutils -y && \
+	apt install lsb-release -y && \
+	apt install markdown -y && apt autoremove -y
 
 #RUN apt install -y xterm
 

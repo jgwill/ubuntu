@@ -133,17 +133,17 @@ RUN $pip_cur install sqlmlutils
 # From Movie clustering
 #RUN $pip_cur install seaborn surprise
 #RUN $pip_cur install ast
-RUN $pip_cur install nltk
-RUN $pip_cur install seaborn
-RUN $pip_cur install surprise
+RUN $pip_cur install nltk seaborn surprise
+#RUN $pip_cur install seaborn
+#RUN $pip_cur install surprise
 
 #RUN python --version
 
-RUN $pip_cur install pymssql
+RUN $pip_cur install pymssql 
 RUN $pip_cur install forexconnect
 
 RUN $pip_cur install pyalgotrade
-
+RUN $pip_cur install fxcmpy
 
 #for Adding indicators 
 ##@URIR https://technical-analysis-library-in-python.readthedocs.io/en/latest/index.html
@@ -161,18 +161,19 @@ RUN $pip_cur  install ipykernel
 
 # Code Server
 RUN curl -fsSL https://code-server.dev/install.sh | sh
+#TODO Install the Extension in here
 
-RUN $pip_cur install fxcmpy
+
 
 #221022 upgrade after mastering Python/DataPrep
-RUN $pip_cur install plotly-express
-RUN $pip_cur install seaborn
+RUN $pip_cur install plotly-express pyshp colorcet networkx
+#RUN $pip_cur install seaborn
+#RUN pip3.7 install  pyodbc urlopen colour plotly bokeh dropbox notebook ipywidgets
 
+#RUN $pip_cur install pyshp colorcet networkx
+#RUN $pip_cur install colorcet
+#RUN $pip_cur install networkx
 
-RUN $pip_cur install bokeh pyshp 
-RUN $pip_cur install colorcet
-RUN $pip_cur install networkx
-RUN $pip_cur install colorcet
 
 
 WORKDIR /work
