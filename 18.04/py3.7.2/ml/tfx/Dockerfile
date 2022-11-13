@@ -1,3 +1,4 @@
+# syntax=jgwill/dev:dockerfile-1.4
 
 FROM jgwill/ubuntu:18.04-py3.7.2-ml-lzma
 
@@ -12,16 +13,20 @@ FROM jgwill/ubuntu:18.04-py3.7.2-ml-lzma
 #curl https://storage.googleapis.com/tensorflow-serving-apt/tensorflow-serving.release.pub.gpg |  apt-key add -
 #RUN apt update
 
-RUN pip3.10 install -U tfx
+RUN \
+    --mount=type=cache,target=/root/.cache \
+	 pip3.10 install -U tfx
 
 #Required by TradingGym 2210
-RUN pip3.10 install tables
-RUN pip3.10 install networkx
+RUN \
+    --mount=type=cache,target=/root/.cache \
+	pip3.10 install tables networkx kaleido
+#RUN pip3.10 install networkx
 #RUN pip3.10 install trading_env
 
 
-RUN pip3.10 install --upgrade pip
-RUN pip3.10 install kaleido
+#RUN pip3.10 install --upgrade pip
+#RUN pip3.10 install kaleido
 
 #@STCIssue I guess they are included in above tfx
 #RUN apt  install tensorflow-model-server -y
@@ -30,7 +35,12 @@ RUN pip3.10 install kaleido
 WORKDIR /work
 
 #RUN pip3.10 install tapy
-
-RUN pip install backtrader
-RUN pip install yfinance
+RUN \
+    --mount=type=cache,target=/root/.cache \
+	pip3.10 install backtrader yfinance
+RUN \
+    --mount=type=cache,target=/root/.cache \
+	pip3.10 install tensorflow_decision_forests wurlitzer
+#RUN pip install google.colab
+WORKDIR /work
 
