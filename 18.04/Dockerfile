@@ -1,20 +1,35 @@
+# syntax=docker/dockerfile:1.3
 FROM ubuntu:18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt update && \
- 	apt upgrade -y
+WORKDIR /__jgwillinstall
+COPY build/jgw_optimize_docker_build.sh .
+RUN bash jgw_optimize_docker_build.sh
+WORKDIR /root
 
-RUN  DEBIAN_FRONTEND=noninteractive  apt -y install \
-vim git curl zip unzip \
+#RUN \
+#    --mount=type=cache,target=/var/lib/apt/lists \
+#	apt update
+RUN \
+    --mount=type=cache,target=/var/cache/apt \ 
+ 	apt update && apt upgrade -y
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+	DEBIAN_FRONTEND=noninteractive  apt -y install \
+	vim git curl zip unzip \
    wget bzip2\
    sudo \
     xterm  \
    gnupg2  \
     apt-transport-https  \
-   ffmpeg libimage-exiftool-perl 
-RUN  DEBIAN_FRONTEND=noninteractive  apt -y install \
-     supervisor \
+   ffmpeg libimage-exiftool-perl \
+	lsb-release
+
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+	DEBIAN_FRONTEND=noninteractive  apt -y install \
+     			supervisor \
                        fakechroot \
                        locales \
                        iptables \
@@ -23,23 +38,25 @@ RUN  DEBIAN_FRONTEND=noninteractive  apt -y install \
                        tzdata \
                        libnuma-dev \
                        libsss-nss-idmap-dev \
-                       software-properties-common && \
-	apt clean && \
-	rm -rf /var/lib/apt/lists/*
+                       software-properties-common   \
+			iputils-ping net-tools dnsutils  markdown  && \
+		apt remove python3.5 -y && \
+      		apt remove python2.7 -y 
+		
 
 
 #Remove python 3.5
-RUN apt remove python3.5 -y && \
-      apt remove python2.7 -y && \
-      apt autoremove -y
+#RUN apt remove python3.5 -y && \
+#      apt remove python2.7 -y && \
+#      apt autoremove -y
 
 
 USER root
 
-RUN apt update && apt install iputils-ping net-tools -y && \
-	apt install dnsutils -y && \
-	apt install lsb-release -y && \
-	apt install markdown -y && apt autoremove -y
+#RUN apt update && apt install iputils-ping net-tools -y && \
+#	apt install dnsutils -y && \
+#	apt install lsb-release -y && \
+#	apt install markdown -y && apt autoremove -y
 
 #RUN apt install -y xterm
 
