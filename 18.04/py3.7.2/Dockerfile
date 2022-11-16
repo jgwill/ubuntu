@@ -1,4 +1,8 @@
+# syntax=jgwill/dev:dockerfile-1.4 
+
+
 FROM jgwill/ubuntu:18.04
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 
@@ -46,23 +50,38 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 
 # BUild python 3.7
-RUN apt update
+#RUN \
+#    --mount=type=cache,target=/var/lib/apt/lists \
+#	apt update
+
 # Inst build essential
-RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev && \
-	apt install -y liblzma-dev lzma && \
-apt install make -y && \
-  apt clean && \
-	rm -rf /var/lib/apt/lists/*
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+	DEBIAN_FRONTEND=noninteractive apt update && apt install -y build-essential 
+
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+        DEBIAN_FRONTEND=noninteractive apt install -y zlib1g-dev \
+	libncurses5-dev libgdbm-dev libnss3-dev libssl-dev \
+	libreadline-dev libffi-dev 
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+        DEBIAN_FRONTEND=noninteractive apt install -y libsqlite3-dev libbz2-dev  liblzma-dev lzma make
+#	rm -rf /var/lib/apt/lists/*
 #RUN apt update && apt install -y liblzma-dev lzma
 
-WORKDIR /tmp
-RUN wget https://www.python.org/ftp/python/3.7.2/Python-3.7.2.tgz && \
-    tar -xf Python-3.7.2.tgz && \
-	cd Python-3.7.2 && ./configure --enable-optimizations && \
- 	make -j 8 && make altinstall && cd .. && rm -rf Python-3.7.2 && rm Python-3.7.2.tgz && \
-	ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3 && \
-  ln -sf /usr/local/bin/python3.7 /usr/local/bin/python && \
-  ln -sf /usr/local/bin/pip3.10 /usr/local/bin/pip
+WORKDIR /tmpcache
+RUN \
+    --mount=type=cache,target=/tmpcache \
+	if [ ! -e  "Python-3.7.2" ] ;then wget https://www.python.org/ftp/python/3.7.2/Python-3.7.2.tgz && tar -xf Python-3.7.2.tgz \
+	&& cd Python-3.7.2 && ./configure --enable-optimizations && \
+	make -j 8 && make altinstall; \
+	else \
+		cd Python-3.7.2 && make altinstall ;fi && \ 
+	echo rm -rf Python-3.7.2 && echo Python-3.7.2.tgz 
+	#ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3 && \
+  #ln -sf /usr/local/bin/python3.7 /usr/local/bin/python && \
+  #ln -sf /usr/local/bin/pip3.7 /usr/local/bin/pip
 
 
 #RUN pip3 install --upgrade pip
@@ -99,17 +118,21 @@ RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/loc
 
 
 # Migrated from the ./ml
-RUN apt update && \
-	apt install -y gfortran libopenblas-dev liblapack-dev && \
-	apt install -y pkg-config && \
-	apt install libboost-all-dev -y && \
-	apt install cmake make -y && \
-	apt install  unixodbc-dev -y
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+	apt install -y gfortran libopenblas-dev liblapack-dev pkg-config libboost-all-dev unixodbc-dev cmake
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+        apt update && apt upgrade -y
 
 # Some more info on pyodbc
 #RUN apt install  unixodbc-dev -y
-RUN pip3.7 install --upgrade pip
-RUN pip3.7 install  pyodbc urlopen colour plotly bokeh dropbox notebook ipywidgets
+RUN \
+    --mount=type=cache,target=/root/.cache \
+	pip3.7 install --upgrade pip
+RUN \
+    --mount=type=cache,target=/root/.cache \
+	pip3.7 install  pyodbc urlopen colour plotly bokeh dropbox notebook ipywidgets
 
 
 #RUN pip3.7 install --upgrade pip
@@ -117,12 +140,15 @@ RUN pip3.7 install  pyodbc urlopen colour plotly bokeh dropbox notebook ipywidge
 #RUN pip3.7 install plotly bokeh
 #RUN pip3.7 install dropbox notebook ipywidgets
 #RUN pip3.7 install seaborn IN ML
-RUN pip3.7 install jupyterlab
+RUN \
+    --mount=type=cache,target=/root/.cache \
+	pip3.7 install jupyterlab opencv-python python-dotenv
+
 
 
 
 USER root
-
+WORKDIR /work
 #RUN apt update
 
 

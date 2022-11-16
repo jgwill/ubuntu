@@ -1,12 +1,22 @@
+# syntax=jgwill/dev:dockerfile-1.4
+
 FROM jgwill/ubuntu:18.04-py3.7.2-lzma
 ARG pip_parent=pip3.7
 ARG pip_cur=pip3.10
 ARG nodeversion=16.x
 
 #USER ubuntu
+#WORKDIR /__jgwillinstall
+#COPY build/jgw_optimize_docker_build.sh .
+#RUN bash jgw_optimize_docker_build.sh
+WORKDIR /root
 
+#RUN mkdir /__jgwill && mv /etc/apt/apt.conf.d/docker-clean /__jgwill
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+    apt update  && \
+	apt install -y	gcc g++ 
 
-RUN apt update 
 #&& apt upgrade -y 
 
 # RUN apt install -y build-essential
@@ -20,8 +30,9 @@ RUN apt update
 #RUN $pip_cur install setuptools
 
 #RUN apt -y install make cmake 
-
-RUN $pip_parent  install --upgrade pip
+RUN \
+    --mount=type=cache,target=/root/.cache \
+	$pip_parent  install --upgrade pip
 
 
 
@@ -29,52 +40,71 @@ RUN $pip_parent  install --upgrade pip
 
 #USER root
 #RUN apt update
-RUN curl -sL https://deb.nodesource.com/setup_$nodeversion -o /tmp/nodesource_setup.sh &&   bash /tmp/nodesource_setup.sh  && \
- apt install -y nodejs && \
- apt clean && \
-rm -rf /var/lib/apt/lists/*
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+	curl -sL https://deb.nodesource.com/setup_$nodeversion -o /tmp/nodesource_setup.sh &&   bash /tmp/nodesource_setup.sh  && \ 
+ 	apt update && apt install -y nodejs 
+#apt clean && \
+#rm -rf /var/lib/apt/lists/*
 
-
+#RUN --mount=type=cache,target=/root/.npm
+#RUN --mount=type=cache,target=/root/.cache
 #USER root
 
-RUN npm --version
+#RUN npm --version
+RUN \
+    --mount=type=cache,target=/root/.npm \
+ 	npm install npm --g && \
+	npm install tlid droxul http-server --g
+RUN \
+    --mount=type=cache,target=/root/.npm \
+	npm cache verify >> /npm-cache-verify.txt
 
-RUN npm install npm --g
-RUN npm install tlid --g
-RUN npm install droxul --g
-RUN npm install http-server --g
+#RUN npm install droxul --g
+#RUN npm install http-server --g
+RUN \
+    --mount=type=cache,target=/root/.npm \
+	npm i node-gyp --g && \
+	npm i json2bash --g && \
+	npm install typescript --g && \
+	npm i thumbsup --g
 
-RUN npm i node-gyp --g
-RUN npm i json2bash --g
-RUN npm install typescript --g
-RUN npm i thumbsup --g
+RUN \
+    --mount=type=cache,target=/root/.npm \
+        npm cache verify >> /npm-cache-verify.txt
 
-
-
-
-#
-
-
-
-
-
+#@STCGoal Optimal and Fast Build
+#@STCIssue Each time we change the parent, it takes a long time to reinstall
+#RUN --mount=type=cache,target=/root/.cache
+#RUN --mount=type=cache,target=/root/.npm
 
 
-RUN $pip_cur install numpy
+RUN --mount=type=cache,target=/root/.cache \
+	du -ksh /root/.cache >> /duks_cache.txt
 
-RUN $pip_cur install scipy
-RUN $pip_cur install pandas
-RUN $pip_cur install pandas_ta
-RUN $pip_cur install patsy
-RUN $pip_cur install statsmodels
-RUN $pip_cur install --upgrade pip
-RUN apt install -y libfreetype6-dev; \
-	$pip_cur install matplotlib
-RUN $pip_cur install ws4py
-RUN $pip_cur install tornado
-RUN $pip_cur install tweepy
-RUN $pip_cur install cython
-RUN $pip_cur install retrying
+
+
+RUN --mount=type=cache,target=/root/.cache \
+	$pip_cur install numpy scipy pandas pandas_ta patsy statsmodels sklearn
+
+#RUN $pip_cur install scipy
+#RUN $pip_cur install pandas
+#RUN $pip_cur install pandas_ta
+#RUN $pip_cur install patsy
+#RUN $pip_cur install statsmodels
+#RUN $pip_cur install --upgrade pip
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+	apt install -y libfreetype6-dev graphviz default-jre
+
+RUN --mount=type=cache,target=/root/.cache \
+	$pip_cur install matplotlib && \
+	$pip_cur install ws4py tornado tweepy cython retrying
+
+#RUN $pip_cur install tornado
+#RUN $pip_cur install tweepy
+#RUN $pip_cur install cython
+#RUN $pip_cur install retrying
 
 #RUN $pip_cur install setuptools
 #WORKDIR /tmp
@@ -89,7 +119,7 @@ RUN $pip_cur install retrying
 #RUN apt install -y python3-setuptools
 
 #RUN $pip_cur install pyodbc
-RUN $pip_cur install sklearn
+#RUN $pip_cur install sklearn
 
 #RUN apt remove -y  python3-setuptools
 
@@ -124,56 +154,74 @@ RUN $pip_cur install sklearn
 
 
 
+RUN --mount=type=cache,target=/root/.cache \
+        du -ksh /root/.cache >> /duks_cache.txt
 
 
 # WINDOWS ODBC: https://docs.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16
 
-RUN $pip_cur install sqlmlutils
+#RUN $pip_cur install sqlmlutils
 
 # From Movie clustering
 #RUN $pip_cur install seaborn surprise
 #RUN $pip_cur install ast
-RUN $pip_cur install nltk seaborn surprise
+RUN \
+    --mount=type=cache,target=/root/.cache \
+	$pip_cur install sqlmlutils nltk seaborn surprise pymssql
+
 #RUN $pip_cur install seaborn
 #RUN $pip_cur install surprise
 
 #RUN python --version
 
-RUN $pip_cur install pymssql 
-RUN $pip_cur install forexconnect
+#RUN $pip_cur install pymssql 
 
-RUN $pip_cur install pyalgotrade
-RUN $pip_cur install fxcmpy
+
 
 #for Adding indicators 
 ##@URIR https://technical-analysis-library-in-python.readthedocs.io/en/latest/index.html
 ##@URIR https://python.plainenglish.io/a-simple-guide-to-plotly-for-plotting-financial-chart-54986c996682
-RUN $pip_cur install ta
+WORKDIR /repos
+COPY requirements.txt .
+RUN \
+    --mount=type=cache,target=/root/.cache \
+	pip install -r requirements.txt
 
+
+RUN --mount=type=cache,target=/root/.cache \
+        du -ksh /root/.cache >> /duks_cache.txt
 
 #for TFX
-RUN $pip_cur install pyyaml 
-RUN $pip_cur install -q requests
-RUN $pip_cur install pandas-datareader
+#RUN \
+#    --mount=type=cache,target=/root/.cache \
+#	$pip_cur install pyyaml pandas-datareader ta && \
+#	$pip_cur install -q requests
+#RUN $pip_cur install pandas-datareader
 
 #Serve notebooks
-RUN $pip_cur  install ipykernel
+#RUN \
+#    --mount=type=cache,target=/root/.cache \
+#	$pip_cur  install ipykernel
 
 # Code Server
-RUN curl -fsSL https://code-server.dev/install.sh | sh
+#RUN curl -fsSL https://code-server.dev/install.sh | sh
 #TODO Install the Extension in here
 
 
 
 #221022 upgrade after mastering Python/DataPrep
-RUN $pip_cur install plotly-express pyshp colorcet networkx
+#RUN \
+#    --mount=type=cache,target=/root/.cache \
+#	$pip_cur install plotly-express pyshp colorcet networkx
 #RUN $pip_cur install seaborn
 #RUN pip3.7 install  pyodbc urlopen colour plotly bokeh dropbox notebook ipywidgets
 
 #RUN $pip_cur install pyshp colorcet networkx
 #RUN $pip_cur install colorcet
 #RUN $pip_cur install networkx
-
+#RUN \
+#    --mount=type=cache,target=/root/.cache \
+#	$pip_cur install google.colab
 
 
 WORKDIR /work

@@ -1,0 +1,12 @@
+tfx
+tables
+networkx
+kaleido
+boto3
+opencv-python
+python-dotenv
+torch
+backtrader
+yfinance
+tensorflow_decision_forests
+wurlitzer
