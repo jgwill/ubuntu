@@ -185,7 +185,7 @@ WORKDIR /repos
 COPY requirements.txt .
 RUN \
     --mount=type=cache,target=/root/.cache \
-	pip install -r requirements.txt
+	$pip_cur install -r requirements.txt
 
 
 RUN --mount=type=cache,target=/root/.cache \
@@ -204,9 +204,21 @@ RUN --mount=type=cache,target=/root/.cache \
 #	$pip_cur  install ipykernel
 
 # Code Server
-#RUN curl -fsSL https://code-server.dev/install.sh | sh
+RUN curl -fsSL https://code-server.dev/install.sh | sh
 #TODO Install the Extension in here
+WORKDIR /svr/code-server/code-server-ext
+COPY code-server-ext .
+RUN ls
+RUN pwd
+RUN for x in $(ls *vsix) ;do   echo "Installing $x";/usr/bin/code-server --install-extension "$x"; done 
+WORKDIR /svr/code-server
+RUN rm -rf code-server-ext && cp ~/.config/code-server/config.yaml .
+RUN for x in $(code-server --list-extensions);do code-server --install-extension $x --force;done
 
+WORKDIR /opt
+COPY run_code_server.sh run_kada_server.sh
+COPY run_code_server.sh .
+RUN chmod a+x run_kada_server.sh run_code_server.sh
 
 
 #221022 upgrade after mastering Python/DataPrep
@@ -223,6 +235,11 @@ RUN --mount=type=cache,target=/root/.cache \
 #    --mount=type=cache,target=/root/.cache \
 #	$pip_cur install google.colab
 
+RUN pip3.10 install -U pip wheel setuptools
+
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+	apt install python3-urllib3 python3-requests ssh-import-id  libc6-dbg -y
 
 WORKDIR /work
 

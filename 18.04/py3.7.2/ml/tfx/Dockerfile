@@ -13,4 +13,6 @@ RUN \
         pip install -r requirements.txt
 
 
-
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+        apt install python3-urllib3 python3-requests ssh-import-id  libc6-dbg -y

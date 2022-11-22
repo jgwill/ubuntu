@@ -26,3 +26,8 @@ pyshp
 colorcet
 networkx
 tweepy
+tzdata
+build
+twine
+jgtapy
+git-python
