@@ -82,7 +82,8 @@ RUN \
 	#ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3 && \
   #ln -sf /usr/local/bin/python3.7 /usr/local/bin/python && \
   #ln -sf /usr/local/bin/pip3.7 /usr/local/bin/pip
-
+RUN update-alternatives --install /usr/bin/python python /usr/local/bin/python3.7 1
+RUN update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.7 1
 
 #RUN pip3 install --upgrade pip
 
@@ -129,22 +130,15 @@ RUN \
 #RUN apt install  unixodbc-dev -y
 RUN \
     --mount=type=cache,target=/root/.cache \
-	pip3.7 install --upgrade pip
+	pip install --upgrade pip
 RUN \
     --mount=type=cache,target=/root/.cache \
-	pip3.7 install  pyodbc urlopen colour plotly bokeh dropbox notebook ipywidgets
-
-
-#RUN pip3.7 install --upgrade pip
-#RUN pip3.7 install urlopen colour
-#RUN pip3.7 install plotly bokeh
-#RUN pip3.7 install dropbox notebook ipywidgets
-#RUN pip3.7 install seaborn IN ML
+	pip install  pyodbc urlopen colour plotly bokeh dropbox notebook ipywidgets \
+	 jupyterlab opencv-python python-dotenv 
 RUN \
     --mount=type=cache,target=/root/.cache \
-	pip3.7 install jupyterlab opencv-python python-dotenv
-
-
+	pip list -o | cut -f1 -d' ' | tr " " "\n" | awk '{if(NR>=3)print}' | cut -d' ' -f1 | xargs -n1 pip install -U
+	#pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
 
 
 USER root

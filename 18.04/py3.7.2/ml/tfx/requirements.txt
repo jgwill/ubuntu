@@ -5,7 +5,8 @@ kaleido
 boto3
 opencv-python
 python-dotenv
-torch
+#torch
+#torch.utils
 backtrader
 yfinance
 tensorflow_decision_forests

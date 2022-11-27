@@ -1,3 +1,5 @@
+wheel
+setuptools
 numpy
 scipy
 pandas
@@ -14,7 +16,7 @@ retrying
 sqlmlutils
 nltk
 seaborn
-surprise
+scikit-surprise
 pymssql
 pyyaml
 pandas-datareader

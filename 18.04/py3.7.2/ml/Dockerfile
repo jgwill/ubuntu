@@ -32,18 +32,24 @@ RUN \
 #RUN apt -y install make cmake 
 RUN \
     --mount=type=cache,target=/root/.cache \
-	$pip_parent  install --upgrade pip
+	pip  install --upgrade pip
 
-
-
+RUN pip --version && sleep 4
 
 
 #USER root
 #RUN apt update
+WORKDIR /var/cache/apt/node_install
 RUN \
     --mount=type=cache,target=/var/cache/apt \
-	curl -sL https://deb.nodesource.com/setup_$nodeversion -o /tmp/nodesource_setup.sh &&   bash /tmp/nodesource_setup.sh  && \ 
+		curl -sL https://deb.nodesource.com/setup_$nodeversion -o nodesource_setup.sh &&   bash nodesource_setup.sh  && \ 
  	apt update && apt install -y nodejs 
+#RUN \
+#    --mount=type=cache,target=/var/cache/apt \
+#if [ ! -e "nodesource_setup.sh" ];then  curl -sL https://deb.nodesource.com/setup_$nodeversion -o nodesource_setup.sh &&   bash nodesource_setup.sh  && \
+        #apt update && apt install -y nodejs ;else cp "nodesource_setup.sh" /tmp;fi
+WORKDIR /work
+
 #apt clean && \
 #rm -rf /var/lib/apt/lists/*
 
@@ -79,13 +85,13 @@ RUN \
 #RUN --mount=type=cache,target=/root/.npm
 
 
-RUN --mount=type=cache,target=/root/.cache \
-	du -ksh /root/.cache >> /duks_cache.txt
+#RUN --mount=type=cache,target=/root/.cache \
+#	du -ksh /root/.cache >> /duks_cache.txt
 
 
 
 RUN --mount=type=cache,target=/root/.cache \
-	$pip_cur install numpy scipy pandas pandas_ta patsy statsmodels sklearn
+	pip install numpy scipy pandas pandas_ta patsy statsmodels sklearn
 
 #RUN $pip_cur install scipy
 #RUN $pip_cur install pandas
@@ -98,8 +104,8 @@ RUN \
 	apt install -y libfreetype6-dev graphviz default-jre
 
 RUN --mount=type=cache,target=/root/.cache \
-	$pip_cur install matplotlib && \
-	$pip_cur install ws4py tornado tweepy cython retrying
+	pip install matplotlib && \
+	pip install ws4py tornado tweepy cython retrying
 
 #RUN $pip_cur install tornado
 #RUN $pip_cur install tweepy
@@ -114,7 +120,7 @@ RUN --mount=type=cache,target=/root/.cache \
 #RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
 #RUN apt update
 #RUN apt install msodbcsql17 -y
-#RUN apt install python3.7-dev -y
+#RUN apt i python3.7-dev -y
 
 #RUN apt install -y python3-setuptools
 
@@ -167,7 +173,7 @@ RUN --mount=type=cache,target=/root/.cache \
 #RUN $pip_cur install ast
 RUN \
     --mount=type=cache,target=/root/.cache \
-	$pip_cur install sqlmlutils nltk seaborn surprise pymssql
+	pip install sqlmlutils nltk seaborn surprise pymssql
 
 #RUN $pip_cur install seaborn
 #RUN $pip_cur install surprise
@@ -185,11 +191,11 @@ WORKDIR /repos
 COPY requirements.txt .
 RUN \
     --mount=type=cache,target=/root/.cache \
-	$pip_cur install -r requirements.txt
+	pip install -r requirements.txt
 
 
-RUN --mount=type=cache,target=/root/.cache \
-        du -ksh /root/.cache >> /duks_cache.txt
+#RUN --mount=type=cache,target=/root/.cache \
+#        du -ksh /root/.cache >> /duks_cache.txt
 
 #for TFX
 #RUN \
@@ -210,10 +216,12 @@ WORKDIR /svr/code-server/code-server-ext
 COPY code-server-ext .
 RUN ls
 RUN pwd
-RUN for x in $(ls *vsix) ;do   echo "Installing $x";/usr/bin/code-server --install-extension "$x"; done 
+#DISABLED because they are by userI
+RUN for x in $(ls *vsix) ;do   echo "Installing $x";/usr/bin/code-server --install-extension /admin  "$x"; done 
 WORKDIR /svr/code-server
-RUN rm -rf code-server-ext && cp ~/.config/code-server/config.yaml .
-RUN for x in $(code-server --list-extensions);do code-server --install-extension $x --force;done
+RUN rm -rf code-server-ext 
+RUN cp ~/.config/code-server/config.yaml .
+#RUN for x in $(code-server --list-extensions);do code-server --install-extension /admin $x --force;done
 
 WORKDIR /opt
 COPY run_code_server.sh run_kada_server.sh
@@ -235,12 +243,29 @@ RUN chmod a+x run_kada_server.sh run_code_server.sh
 #    --mount=type=cache,target=/root/.cache \
 #	$pip_cur install google.colab
 
-RUN pip3.10 install -U pip wheel setuptools
+#RUN pip install -U pip wheel setuptools
 
 RUN \
     --mount=type=cache,target=/var/cache/apt \
 	apt install python3-urllib3 python3-requests ssh-import-id  libc6-dbg -y
 
+RUN \
+    --mount=type=cache,target=/root/.cache \
+	 pip install -U pip wheel setuptools
+
+RUN \
+    --mount=type=cache,target=/root/.npm \
+        npm install npm yarn @angular/cli --g
+
+WORKDIR /tmp
+RUN \
+    --mount=type=cache,target=/root/.npm \
+	ng new my-app --defaults && rm -rf my-app
+
+WORKDIR /svr/code-server
+#RUN rm -rf code-server-ext && cp ~/.config/code-server/config.yaml .
+RUN for x in $(code-server --list-extensions);do code-server --install-extension /admin $x --force;done
+#RUN cp ~/.config/code-server/config.yaml .
 WORKDIR /work
 
 

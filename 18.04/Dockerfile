@@ -1,4 +1,5 @@
-# syntax=docker/dockerfile:1.3
+
+
 FROM ubuntu:18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -24,11 +25,7 @@ RUN \
    gnupg2  \
     apt-transport-https  \
    ffmpeg libimage-exiftool-perl \
-	lsb-release
-
-RUN \
-    --mount=type=cache,target=/var/cache/apt \
-	DEBIAN_FRONTEND=noninteractive  apt -y install \
+	lsb-release  \
      			supervisor \
                        fakechroot \
                        locales \
@@ -39,10 +36,10 @@ RUN \
                        libnuma-dev \
                        libsss-nss-idmap-dev \
                        software-properties-common   \
-			iputils-ping net-tools dnsutils  markdown  && \
-		apt remove python3.5 -y && \
-      		apt remove python2.7 -y 
-		
+			iputils-ping net-tools dnsutils  markdown  
+#		apt remove python3.5 -y && \
+#      		apt remove python2.7 -y  && apt autoremove -y
+#RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2		
 
 
 #Remove python 3.5
