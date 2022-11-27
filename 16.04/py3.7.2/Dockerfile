@@ -1,52 +1,54 @@
-FROM ubuntu:16.04
+FROM jgwill/ubuntu:16.04
 ENV DEBIAN_FRONTEND=noninteractive
 
-  # DEBIAN_FRONTEND=noninteractive TZ="America/New_York" apt-get -y install tzdata && \
-RUN apt update && \
- 	apt upgrade -y && \
-  DEBIAN_FRONTEND=noninteractive  apt -y install vim git curl && \
-  apt install -y wget bzip2 && \
-  apt install -y sudo && \
-  apt install -y xterm && \
-  apt install -y gnupg2 && \
-  apt install -y curl apt-transport-https && \
-  apt install ffmpeg libimage-exiftool-perl -y && \
-	apt clean && \
-	rm -rf /var/lib/apt/lists/*
 
-# install supporting packages
-RUN apt-get update && \
-    apt-get install -y apt-transport-https \
-                       curl \
-                       supervisor \
-                       fakechroot \
-                       locales \
-                       iptables \
-                       sudo \
-                       wget \
-                       curl \
-                       zip \
-                       unzip \
-                       make \
-                       bzip2 \
-                       m4 \
-                       apt-transport-https \
-                       tzdata \
-                       libnuma-dev \
-                       libsss-nss-idmap-dev \
-                       software-properties-common
+# Moved to jgwill/ubuntu:18.04
+# DEBIAN_FRONTEND=noninteractive TZ="America/New_York" apt-get -y install tzdata && \
+# RUN apt update && \
+#  	apt upgrade -y && \
+#   DEBIAN_FRONTEND=noninteractive  apt -y install vim git curl && \
+#   apt install -y wget bzip2 && \
+#   apt install -y sudo && \
+#   apt install -y xterm && \
+#   apt install -y gnupg2 && \
+#   apt install -y curl apt-transport-https && \
+#   apt install ffmpeg libimage-exiftool-perl -y && \
+# 	apt clean && \
+# 	rm -rf /var/lib/apt/lists/*
+
+# # install supporting packages
+# RUN apt-get update && \
+#     apt-get install -y apt-transport-https \
+#                        curl \
+#                        supervisor \
+#                        fakechroot \
+#                        locales \
+#                        iptables \
+#                        sudo \
+#                        wget \
+#                        curl \
+#                        zip \
+#                        unzip \
+#                        make \
+#                        bzip2 \
+#                        m4 \
+#                        apt-transport-https \
+#                        tzdata \
+#                        libnuma-dev \
+#                        libsss-nss-idmap-dev \
+#                        software-properties-common
 
 
-#Remove python 3.5
-RUN apt remove python3.5 -y && \
-      apt remove python2.7 -y && \
-      apt autoremove -y
+# #Remove python 3.5
+# RUN apt remove python3.5 -y && \
+#       apt remove python2.7 -y && \
+#       apt autoremove -y
 
 
 # BUild python 3.7
-
+RUN apt update
 # Inst build essential
-RUN apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev && \
+RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev && \
   apt clean && \
 	rm -rf /var/lib/apt/lists/*
 RUN apt update && apt install -y liblzma-dev lzma
@@ -58,7 +60,7 @@ RUN wget https://www.python.org/ftp/python/3.7.2/Python-3.7.2.tgz && \
  	make -j 8 && make altinstall && cd .. && rm -rf Python-3.7.2 && rm Python-3.7.2.tgz
 
 
-RUN pip3.7 install --upgrade pip
+#RUN pip3 install --upgrade pip
 
 # Linking regular python cmd so python and python3 cmd will works
 RUN  ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3 && \
@@ -89,7 +91,7 @@ WORKDIR /
 #Damn TZ issue
 RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
 
-RUN pip install --upgrade pip
+
 
 # Migrated from the ./ml
 RUN apt install -y gfortran libopenblas-dev liblapack-dev
@@ -100,9 +102,22 @@ RUN apt install cmake make -y
 
 # Some more info on pyodbc
 RUN apt install  unixodbc-dev -y
-RUN pip install  pyodbc
+RUN pip3.7 install  pyodbc
 
 RUN apt install lsb-release -y
+
+RUN pip3.7 install --upgrade pip
+RUN pip3.7 install urlopen
+RUN pip3.7 install colour
+RUN pip3.7 install plotly
+RUN pip3.7 install bokeh
+RUN pip3.7 install dropbox
+RUN pip3.7 install notebook ipywidgets
+#RUN pip3.7 install seaborn IN ML
+RUN pip3.7 install jupyterlab
+
+
+
 USER root
 
 #RUN apt update
