@@ -214,19 +214,18 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh
 #TODO Install the Extension in here
 WORKDIR /svr/code-server/code-server-ext
 COPY code-server-ext .
-RUN ls
-RUN pwd
+
 #DISABLED because they are by userI
-RUN for x in $(ls *vsix) ;do   echo "Installing $x";/usr/bin/code-server --install-extension /admin  "$x"; done 
+RUN ls *vsix &>/dev/null && for x in $(ls *vsix) ;do   echo "Installing $x";/usr/bin/code-server --install-extension /admin  "$x"; done && echo "Installed code-server extensions..." > ../log-dkbuild.txt ||  echo "Failed code-server extensions installation..." > ../log-dkbuild.txt
 WORKDIR /svr/code-server
-RUN rm -rf code-server-ext 
-RUN cp ~/.config/code-server/config.yaml .
+RUN rm -rf code-server-ext && \
+	cp ~/.config/code-server/config.yaml .
 #RUN for x in $(code-server --list-extensions);do code-server --install-extension /admin $x --force;done
 
 WORKDIR /opt
 COPY run_code_server.sh run_kada_server.sh
-COPY run_code_server.sh .
-RUN chmod a+x run_kada_server.sh run_code_server.sh
+RUN cp run_kada_server.sh run_code_server.sh && \ 
+	chmod a+x run_kada_server.sh run_code_server.sh
 
 
 #221022 upgrade after mastering Python/DataPrep
