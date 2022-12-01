@@ -12,10 +12,10 @@ ARG nodeversion=16.x
 WORKDIR /root
 
 #RUN mkdir /__jgwill && mv /etc/apt/apt.conf.d/docker-clean /__jgwill
-RUN \
-    --mount=type=cache,target=/var/cache/apt \
-    apt update  && \
-	apt install -y	gcc g++ 
+#RUN \
+#    --mount=type=cache,target=/var/cache/apt \
+#    apt update  && \
+#	apt install -y	gcc g++ 
 
 #&& apt upgrade -y 
 
@@ -30,11 +30,11 @@ RUN \
 #RUN $pip_cur install setuptools
 
 #RUN apt -y install make cmake 
-RUN \
-    --mount=type=cache,target=/root/.cache \
-	pip  install --upgrade pip
+#RUN \
+#    --mount=type=cache,target=/root/.cache \
+#	pip  install --upgrade pip
 
-RUN pip --version && sleep 4
+#RUN pip --version && sleep 4
 
 
 #USER root
@@ -61,23 +61,27 @@ WORKDIR /work
 RUN \
     --mount=type=cache,target=/root/.npm \
  	npm install npm --g && \
-	npm install tlid droxul http-server --g
-RUN \
-    --mount=type=cache,target=/root/.npm \
-	npm cache verify >> /npm-cache-verify.txt
+	npm install tlid droxul http-server \
+ 	node-gyp   \
+        json2bash   \
+        typescript  \
+         thumbsup --g
+#RUN \
+#    --mount=type=cache,target=/root/.npm \
+#	npm cache verify >> /npm-cache-verify.txt
 
 #RUN npm install droxul --g
 #RUN npm install http-server --g
-RUN \
-    --mount=type=cache,target=/root/.npm \
-	npm i node-gyp --g && \
-	npm i json2bash --g && \
-	npm install typescript --g && \
-	npm i thumbsup --g
+#RUN \
+#    --mount=type=cache,target=/root/.npm \
+#	npm i node-gyp --g && \
+#	npm i json2bash --g && \
+#	npm install typescript --g && \
+#	npm i thumbsup --g
 
-RUN \
-    --mount=type=cache,target=/root/.npm \
-        npm cache verify >> /npm-cache-verify.txt
+#RUN \
+#    --mount=type=cache,target=/root/.npm \
+#        npm cache verify >> /npm-cache-verify.txt
 
 #@STCGoal Optimal and Fast Build
 #@STCIssue Each time we change the parent, it takes a long time to reinstall
@@ -90,8 +94,8 @@ RUN \
 
 
 
-RUN --mount=type=cache,target=/root/.cache \
-	pip install numpy scipy pandas pandas_ta patsy statsmodels sklearn
+#RUN --mount=type=cache,target=/root/.cache \
+	#pip install numpy scipy pandas pandas_ta patsy statsmodels sklearn
 
 #RUN $pip_cur install scipy
 #RUN $pip_cur install pandas
@@ -103,9 +107,9 @@ RUN \
     --mount=type=cache,target=/var/cache/apt \
 	apt install -y libfreetype6-dev graphviz default-jre
 
-RUN --mount=type=cache,target=/root/.cache \
-	pip install matplotlib && \
-	pip install ws4py tornado tweepy cython retrying
+#RUN --mount=type=cache,target=/root/.cache \
+#	pip install matplotlib && \
+#	pip install ws4py tornado tweepy cython retrying
 
 #RUN $pip_cur install tornado
 #RUN $pip_cur install tweepy
@@ -160,8 +164,8 @@ RUN --mount=type=cache,target=/root/.cache \
 
 
 
-RUN --mount=type=cache,target=/root/.cache \
-        du -ksh /root/.cache >> /duks_cache.txt
+#RUN --mount=type=cache,target=/root/.cache \
+#        du -ksh /root/.cache >> /duks_cache.txt
 
 
 # WINDOWS ODBC: https://docs.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16
@@ -171,9 +175,9 @@ RUN --mount=type=cache,target=/root/.cache \
 # From Movie clustering
 #RUN $pip_cur install seaborn surprise
 #RUN $pip_cur install ast
-RUN \
-    --mount=type=cache,target=/root/.cache \
-	pip install sqlmlutils nltk seaborn surprise pymssql
+#RUN \
+#    --mount=type=cache,target=/root/.cache \
+#	pip install sqlmlutils nltk seaborn surprise pymssql
 
 #RUN $pip_cur install seaborn
 #RUN $pip_cur install surprise
@@ -182,6 +186,9 @@ RUN \
 
 #RUN $pip_cur install pymssql 
 
+RUN \
+    --mount=type=cache,target=/root/.cache \
+         pip install -U pip wheel setuptools
 
 
 #for Adding indicators 
@@ -210,7 +217,10 @@ RUN \
 #	$pip_cur  install ipykernel
 
 # Code Server
-RUN curl -fsSL https://code-server.dev/install.sh | sh
+RUN \
+    --mount=type=cache,target=/root/.cache \
+	curl -fsSL https://code-server.dev/install.sh | sh
+
 #TODO Install the Extension in here
 WORKDIR /svr/code-server/code-server-ext
 COPY code-server-ext .
@@ -244,13 +254,10 @@ RUN cp run_kada_server.sh run_code_server.sh && \
 
 #RUN pip install -U pip wheel setuptools
 
-RUN \
-    --mount=type=cache,target=/var/cache/apt \
-	apt install python3-urllib3 python3-requests ssh-import-id  libc6-dbg -y
+#RUN \
+#    --mount=type=cache,target=/var/cache/apt \
+#	apt install python3-urllib3 python3-requests ssh-import-id  libc6-dbg -y
 
-RUN \
-    --mount=type=cache,target=/root/.cache \
-	 pip install -U pip wheel setuptools
 
 RUN \
     --mount=type=cache,target=/root/.npm \

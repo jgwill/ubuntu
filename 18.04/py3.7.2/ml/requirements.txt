@@ -1,5 +1,11 @@
-wheel
-setuptools
+cython
+retrying
+sqlmlutils
+nltk
+seaborn
+pymssql
+#wheel
+#setuptools
 numpy
 scipy
 pandas
@@ -11,13 +17,7 @@ matplotlib
 ws4py
 tornado
 tweepy
-cython
-retrying
-sqlmlutils
-nltk
-seaborn
 scikit-surprise
-pymssql
 pyyaml
 pandas-datareader
 ta

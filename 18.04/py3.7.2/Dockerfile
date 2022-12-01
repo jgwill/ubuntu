@@ -57,16 +57,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Inst build essential
 RUN \
     --mount=type=cache,target=/var/cache/apt \
-	DEBIAN_FRONTEND=noninteractive apt update && apt install -y build-essential 
-
-RUN \
-    --mount=type=cache,target=/var/cache/apt \
-        DEBIAN_FRONTEND=noninteractive apt install -y zlib1g-dev \
-	libncurses5-dev libgdbm-dev libnss3-dev libssl-dev \
-	libreadline-dev libffi-dev 
-RUN \
-    --mount=type=cache,target=/var/cache/apt \
-        DEBIAN_FRONTEND=noninteractive apt install -y libsqlite3-dev libbz2-dev  liblzma-dev lzma make
+	DEBIAN_FRONTEND=noninteractive apt update && apt install -y build-essential  \
+		zlib1g-dev \
+		libncurses5-dev libgdbm-dev libnss3-dev libssl-dev \
+		libreadline-dev libffi-dev  \ 
+        	libsqlite3-dev libbz2-dev  liblzma-dev lzma make \
+		gfortran libopenblas-dev liblapack-dev pkg-config libboost-all-dev \
+		unixodbc-dev cmake  python3-urllib3 python3-requests ssh-import-id  libc6-dbg \
+		gcc g++
 #	rm -rf /var/lib/apt/lists/*
 #RUN apt update && apt install -y liblzma-dev lzma
 
@@ -119,12 +117,13 @@ RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/loc
 
 
 # Migrated from the ./ml
-RUN \
-    --mount=type=cache,target=/var/cache/apt \
-	apt install -y gfortran libopenblas-dev liblapack-dev pkg-config libboost-all-dev unixodbc-dev cmake
-RUN \
-    --mount=type=cache,target=/var/cache/apt \
-        apt update && apt upgrade -y
+#RUN \
+#    --mount=type=cache,target=/var/cache/apt \
+#	apt install -y gfortran libopenblas-dev liblapack-dev pkg-config libboost-all-dev unixodbc-dev cmake  python3-urllib3 python3-requests ssh-import-id  libc6-dbg
+
+#RUN \
+#    --mount=type=cache,target=/var/cache/apt \
+#        apt update && apt upgrade -y
 
 # Some more info on pyodbc
 #RUN apt install  unixodbc-dev -y
@@ -135,9 +134,9 @@ RUN \
     --mount=type=cache,target=/root/.cache \
 	pip install  pyodbc urlopen colour plotly bokeh dropbox notebook ipywidgets \
 	 jupyterlab opencv-python python-dotenv 
-RUN \
-    --mount=type=cache,target=/root/.cache \
-	pip list -o | cut -f1 -d' ' | tr " " "\n" | awk '{if(NR>=3)print}' | cut -d' ' -f1 | xargs -n1 pip install -U
+#RUN \
+#    --mount=type=cache,target=/root/.cache \
+#	pip list -o | cut -f1 -d' ' | tr " " "\n" | awk '{if(NR>=3)print}' | cut -d' ' -f1 | xargs -n1 pip install -U
 	#pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
 
 

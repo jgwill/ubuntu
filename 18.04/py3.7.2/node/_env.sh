@@ -1,5 +1,5 @@
-export dockertag=jgwill/ubuntu:18.04-py3.7.2-lzma-node
-export containertag=ubpy37node
+export dockertag=jgwill/ubuntu:18.04-py3.7.2-lzma-node16
+export containertag=ubpy37node16
 
 
 dkbuildprebuildscript=dkbuildprebuildscript.sh
