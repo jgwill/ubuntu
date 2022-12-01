@@ -3,11 +3,6 @@
 #dockertag=xama/nginx-webdav
 dockertag=guillaumeai/server:webdavv2
 
-#docker run -d \
-#           -e WEBDAV_USERNAME=odin  -e WEBDAV_PASSWORD=A1o2e3u4 \
-#           -p 8080:80 \
-#       -v /path/to/your/files:/var/webdav/public \
- #          xama/nginx-webdav
 
 containername=wd
 
@@ -37,7 +32,7 @@ dkcommand=" "
 . .env
 
 dkextra="  -e WEBDAV_USERNAME="$WEBDAV_USERNAME"  -e WEBDAV_PASSWORD="$WEBDAV_PASSWORD"   -v /a/repos/pys:/p  -v /a/repos:/var/webdav/public "
-#dkextra="  -e WEBDAV_USERNAME=odin  -e WEBDAV_PASSWORD=A1o2e3u4   -v /a/repos/pys:/p  -v /a/repos:/var/webdav/public "
+
 
 #dkmounthome=true
 
