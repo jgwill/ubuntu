@@ -1,7 +1,7 @@
 # syntax=jgwill/dev:dockerfile-1.4 
 
 
-FROM jgwill/ubuntu:18.04-py3.7.2-base-lzma
+FROM jgwill/ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -68,20 +68,20 @@ RUN \
 #	rm -rf /var/lib/apt/lists/*
 #RUN apt update && apt install -y liblzma-dev lzma
 
-#WORKDIR /tmpcache
-#RUN \
-#    --mount=type=cache,target=/tmpcache \
-#	if [ ! -e  "Python-3.7.2" ] ;then wget https://www.python.org/ftp/python/3.7.2/Python-3.7.2.tgz && tar -xf Python-3.7.2.tgz \
-#	&& cd Python-3.7.2 && ./configure --enable-optimizations && \
-#	make -j 8 && make altinstall; \
-#	else \
-#		cd Python-3.7.2 && make altinstall ;fi && \ 
-#	echo rm -rf Python-3.7.2 && echo Python-3.7.2.tgz 
+WORKDIR /tmpcache
+RUN \
+    --mount=type=cache,target=/tmpcache \
+	if [ ! -e  "Python-3.7.2" ] ;then wget https://www.python.org/ftp/python/3.7.2/Python-3.7.2.tgz && tar -xf Python-3.7.2.tgz \
+	&& cd Python-3.7.2 && ./configure --enable-optimizations && \
+	make -j 8 && make altinstall; \
+	else \
+		cd Python-3.7.2 && make altinstall ;fi && \ 
+	echo rm -rf Python-3.7.2 && echo Python-3.7.2.tgz 
 	#ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3 && \
   #ln -sf /usr/local/bin/python3.7 /usr/local/bin/python && \
   #ln -sf /usr/local/bin/pip3.7 /usr/local/bin/pip
-#RUN update-alternatives --install /usr/bin/python python /usr/local/bin/python3.7 1
-#RUN update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.7 1
+RUN update-alternatives --install /usr/bin/python python /usr/local/bin/python3.7 1
+RUN update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.7 1
 
 #RUN pip3 install --upgrade pip
 
@@ -112,7 +112,7 @@ WORKDIR /
 #RUN chmod a+rwx /home/ubuntu/
 
 #Damn TZ issue
-#RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
+RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
 
 
 
@@ -127,9 +127,9 @@ WORKDIR /
 
 # Some more info on pyodbc
 #RUN apt install  unixodbc-dev -y
-#RUN \
-#    --mount=type=cache,target=/root/.cache \
-#	pip install --upgrade pip
+RUN \
+    --mount=type=cache,target=/root/.cache \
+	pip install --upgrade pip
 RUN \
     --mount=type=cache,target=/root/.cache \
 	pip install  pyodbc urlopen colour plotly bokeh dropbox notebook ipywidgets \

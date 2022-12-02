@@ -7,17 +7,17 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 
 
-# # Inst build essential
-# RUN \
-#     --mount=type=cache,target=/var/cache/apt \
-# 	DEBIAN_FRONTEND=noninteractive apt update && apt install -y build-essential  \
-# 		zlib1g-dev \
-# 		libncurses5-dev libgdbm-dev libnss3-dev libssl-dev \
-# 		libreadline-dev libffi-dev  \ 
-#         	libsqlite3-dev libbz2-dev  liblzma-dev lzma make \
-# 		gfortran libopenblas-dev liblapack-dev pkg-config libboost-all-dev \
-# 		unixodbc-dev cmake  python3-urllib3 python3-requests ssh-import-id  libc6-dbg \
-# 		gcc g++
+# Inst build essential
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+	DEBIAN_FRONTEND=noninteractive apt update && apt install -y build-essential  \
+		zlib1g-dev \
+		libncurses5-dev libgdbm-dev libnss3-dev libssl-dev \
+		libreadline-dev libffi-dev  \ 
+        	libsqlite3-dev libbz2-dev  liblzma-dev lzma make \
+		gfortran libopenblas-dev liblapack-dev pkg-config libboost-all-dev \
+		unixodbc-dev cmake  python3-urllib3 python3-requests ssh-import-id  libc6-dbg \
+		gcc g++
 #	rm -rf /var/lib/apt/lists/*
 #RUN apt update && apt install -y liblzma-dev lzma
 
