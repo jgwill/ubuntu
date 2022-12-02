@@ -15,17 +15,17 @@ ARG jgwnodedepspath=/tmp/jgw-node-deps
 #    apt update  && \
 #        apt install -y  gcc g++
 
-WORKDIR /tmpcache2
-RUN \
-    --mount=type=cache,target=/tmpcache2 \
-         if [ ! -e  "node-v16.18.1.tar.gz" ] ;then  wget https://nodejs.org/dist/latest-v16.x/node-v16.18.1.tar.gz   ;fi
+#WORKDIR /tmpcache2
+#RUN \
+#    --mount=type=cache,target=/tmpcache2 \
+#         if [ ! -e  "node-v16.18.1.tar.gz" ] ;then  wget https://nodejs.org/dist/latest-v16.x/node-v16.18.1.tar.gz   ;fi
         #ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3 && \I
   #ln -sf /usr/local/bin/python3.7 /usr/local/bin/python && \
   #ln -sf /usr/local/bin/pip3.7 /usr/local/bin/pip
 
-RUN \
-    --mount=type=cache,target=/tmpcache2 \
-        mkdir -p /usr/local/src && cd /usr/local/src && tar xzf /tmpcache2/node-v16.18.1.tar.gz
+#RUN \
+#    --mount=type=cache,target=/tmpcache2 \
+#        mkdir -p /usr/local/src && cd /usr/local/src && tar xzf /tmpcache2/node-v16.18.1.tar.gz
 #WORKDIR ${jgwnodedepspath}
 #COPY build/pack .
 #WORKDIR /usr/local/src/node-v16.18.1/deps
@@ -46,13 +46,13 @@ RUN \
 WORKDIR /tmpcache2/openssl
 RUN \
     --mount=type=cache,target=/tmpcache2 \
-	if [ ! -e ".git" ] ; then git clone https://github.com/quictls/openssl.git .;fi && \
+	if [ ! -e "config" ] ; then git clone https://github.com/quictls/openssl.git . && \
 	./config \
 		--prefix=/usr/local/src/node-v16.18.1/deps/ssl \
 		 shared \
 		enable-fips \
 		linux-x86_64 && \
-	make -j4 && \
+	make -j4 ;fi && \
 	make install
 #RUN cd openssl && \ 
 #./config \
@@ -64,13 +64,16 @@ RUN \
 
 #WORKDIR /usr/local/src/node-v16.18.1
 WORKDIR /usr/local/src
+
+WORKDIR /tmpcache2
 RUN \
     --mount=type=cache,target=/tmpcache2 \
-        mkdir -p /usr/local/src && cd /usr/local/src && tar xzf /tmpcache2/node-v16.18.1.tar.gz && \
-cd /usr/local/src/node-v16.18.1 && ./configure --without-intl && \
- make -j4 && \
- make install && \
-	rm -rf /usr/local/src/node-v16.18.1
+         if [ ! -e  "node-v16.18.1.tar.gz" ] ;then  wget https://nodejs.org/dist/latest-v16.x/node-v16.18.1.tar.gz  ;fi && \
+	if [ ! -d "src" ]; then	mkdir -p src && cd src && tar xzf /tmpcache2/node-v16.18.1.tar.gz && \
+		cd node-v16.18.1 && ./configure --without-intl && \
+ 		make -j4;fi && \
+ 		cd /tmpcache2/src/node-v16.18.1 ; make install 
+
   
 
 
