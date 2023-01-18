@@ -8,6 +8,7 @@ WORKDIR /__jgwillinstall
 COPY build/jgw_optimize_docker_build.sh .
 RUN bash jgw_optimize_docker_build.sh
 WORKDIR /root
+RUN mkdir -p tmp 
 
 #RUN \
 #    --mount=type=cache,target=/var/lib/apt/lists \
@@ -20,8 +21,7 @@ RUN \
 	DEBIAN_FRONTEND=noninteractive  apt -y install \
 	vim git curl zip unzip \
    wget bzip2\
-   sudo \
-    xterm  \
+   sudo \ 
    gnupg2  \
     apt-transport-https  \
    ffmpeg libimage-exiftool-perl \
@@ -36,7 +36,7 @@ RUN \
                        libnuma-dev \
                        libsss-nss-idmap-dev \
                        software-properties-common   \
-			iputils-ping net-tools dnsutils  markdown  
+			iputils-ping net-tools dnsutils  markdown  dos2unix 
 #		apt remove python3.5 -y && \
 #      		apt remove python2.7 -y  && apt autoremove -y
 #RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2		

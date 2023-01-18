@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1.2
+
 FROM jgwill/ubuntu:18.04-py3.7.2-ml-lzma
 
 RUN \

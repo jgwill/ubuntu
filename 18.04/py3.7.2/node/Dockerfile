@@ -1,4 +1,4 @@
-# syntax=jgwill/dev:dockerfile-1.4
+# syntax=docker/dockerfile:1.2
 
 FROM jgwill/ubuntu:18.04-py3.7.2-lzma
 ARG pip_parent=pip3.7
@@ -34,26 +34,25 @@ ARG jgwnodedepspath=/tmp/jgw-node-deps
 #RUN srcdir=$jgwnodedepspath/build/pack;cdir=$(pwd);for p in $(cd $srcdir;ls *tgz);do pname=$(echo $p | sed 's/\.tgz//g') ;echo "$pname" ;tar  -xzf $srcdir/$p;mv package $pname &>/dev/null;pwd;cd $cdir;done && rm -rf $ç<F12>jgwnodedepspath
 #WORKDIR /usr/local/src/node-v16.18.1
 
-#COPY configure .
-#COPY build/ls-npm.txt .
-#RUN ./configure 
-#RUN ./configure --without-intl 
-#--download "ginol tlid json2bash droxul"
-#RUN  make -j4 
-#RUN  make test-only && make install
-#WORKDIR /usr/local/src
-#WORKDIR /usr/local/src/node-v16.18.1/deps/openssl-latest
-WORKDIR /tmpcache2/openssl
-RUN \
-    --mount=type=cache,target=/tmpcache2 \
-	if [ ! -e "config" ] ; then git clone https://github.com/quictls/openssl.git . && \
-	./config \
-		--prefix=/usr/local/src/node-v16.18.1/deps/ssl \
-		 shared \
-		enable-fips \
-		linux-x86_64 && \
-	make -j4 ;fi && \
-	make install
+
+
+
+
+
+
+#WORKDIR /tmpcache2/openssl
+#RUN \
+#    --mount=type=cache,target=/tmpcache2 \
+#	if [ ! -e "config" ] ; then git clone https://github.com/quictls/openssl.git . && \
+#	export prefix_target=/tmpcache2/src/node-v16.18.1/deps/openssl && \
+#	if [ -e $prefix_target ]; then rm -rf $prefix_target;fi && \
+#	./config \
+#		--prefix=$prefix_target \
+#		 shared \
+#		enable-fips \
+#		linux-x86_64 && \
+#	make -j4 ;fi && \
+#	make install
 #RUN cd openssl && \ 
 #./config \
 #  --prefix=/usr/local/src/node-v16.18.1/deps/ssl \
@@ -64,14 +63,25 @@ RUN \
 
 #WORKDIR /usr/local/src/node-v16.18.1
 WORKDIR /usr/local/src
+WORKDIR /tmpcache2
 
+#RUN \
+# --mount=type=cache,target=/tmpcache2 \
+#	rm -rf src *gz && sleep 5
+
+#node-v16.18.1.tar.gz
+# NOT WORKING : ./configure --with-intl=full-icu --without-intl
+# wget https://github.com/unicode-org/icu/archive/refs/tags/release-72-1.tar.gz ;fi && \
+#  --with-icu-source=/tmpcache2/release-72-1.tar.gz && echo "https://github.com/unicode-org/icu/archive/refs/tags/release-72-1.tar.gz" && \
 WORKDIR /tmpcache2
 RUN \
     --mount=type=cache,target=/tmpcache2 \
-         if [ ! -e  "node-v16.18.1.tar.gz" ] ;then  wget https://nodejs.org/dist/latest-v16.x/node-v16.18.1.tar.gz  ;fi && \
+         if [ ! -e  "node-v16.18.1.tar.gz" ] ;then  wget https://nodejs.org/dist/latest-v16.x/node-v16.18.1.tar.gz ;fi && \ 
 	if [ ! -d "src" ]; then	mkdir -p src && cd src && tar xzf /tmpcache2/node-v16.18.1.tar.gz && \
-		cd node-v16.18.1 && ./configure --without-intl && \
- 		make -j4;fi && \
+		cd node-v16.18.1 && \
+			./configure \
+    				--with-intl=full-icu && \ 
+ 		make -j8;fi && \
  		cd /tmpcache2/src/node-v16.18.1 ; make install 
 
   

@@ -1,4 +1,4 @@
-# syntax=jgwill/dev:dockerfile-1.4 
+# syntax=docker/dockerfile:1.2
 
 
 FROM jgwill/ubuntu:18.04-py3.7.2-base-lzma
@@ -64,7 +64,9 @@ RUN \
         	libsqlite3-dev libbz2-dev  liblzma-dev lzma make \
 		gfortran libopenblas-dev liblapack-dev pkg-config libboost-all-dev \
 		unixodbc-dev cmake  python3-urllib3 python3-requests ssh-import-id  libc6-dbg \
-		gcc g++
+		gcc-8 g++-8 && \
+	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 1 && \
+	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 1
 #	rm -rf /var/lib/apt/lists/*
 #RUN apt update && apt install -y liblzma-dev lzma
 

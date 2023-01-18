@@ -1,6 +1,7 @@
-# syntax=jgwill/dev:dockerfile-1.4
+# syntax=docker/dockerfile:1.2
 
-FROM jgwill/ubuntu:18.04-py3.7.2-lzma
+#FROM jgwill/ubuntu:18.04-py3.7.2-lzma
+FROM jgwill/ubuntu:18.04-py3.7.2-lzma-node-tooled
 ARG pip_parent=pip3.7
 ARG pip_cur=pip3.10
 ARG nodeversion=16.x
@@ -39,11 +40,11 @@ WORKDIR /root
 
 #USER root
 #RUN apt update
-WORKDIR /var/cache/apt/node_install
-RUN \
-    --mount=type=cache,target=/var/cache/apt \
-		curl -sL https://deb.nodesource.com/setup_$nodeversion -o nodesource_setup.sh &&   bash nodesource_setup.sh  && \ 
- 	apt update && apt install -y nodejs 
+#WORKDIR /var/cache/apt/node_install
+#RUN \
+#    --mount=type=cache,target=/var/cache/apt \
+#		curl -sL https://deb.nodesource.com/setup_$nodeversion -o nodesource_setup.sh &&   bash nodesource_setup.sh  && \ 
+# 	apt update && apt install -y nodejs 
 #RUN \
 #    --mount=type=cache,target=/var/cache/apt \
 #if [ ! -e "nodesource_setup.sh" ];then  curl -sL https://deb.nodesource.com/setup_$nodeversion -o nodesource_setup.sh &&   bash nodesource_setup.sh  && \
@@ -58,14 +59,14 @@ WORKDIR /work
 #USER root
 
 #RUN npm --version
-RUN \
-    --mount=type=cache,target=/root/.npm \
- 	npm install npm --g && \
-	npm install tlid droxul http-server \
- 	node-gyp   \
-        json2bash   \
-        typescript  \
-         thumbsup --g
+#RUN \
+#    --mount=type=cache,target=/root/.npm \
+# 	npm install npm --g && \
+#	npm install tlid droxul http-server \
+# 	node-gyp   \
+#        json2bash   \
+#        typescript  \
+#         thumbsup yarn --g
 #RUN \
 #    --mount=type=cache,target=/root/.npm \
 #	npm cache verify >> /npm-cache-verify.txt
@@ -105,7 +106,7 @@ RUN \
 #RUN $pip_cur install --upgrade pip
 RUN \
     --mount=type=cache,target=/var/cache/apt \
-	apt install -y libfreetype6-dev graphviz default-jre
+	apt install -y libfreetype6-dev graphviz default-jre ant
 
 #RUN --mount=type=cache,target=/root/.cache \
 #	pip install matplotlib && \

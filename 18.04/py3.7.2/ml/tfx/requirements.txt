@@ -11,3 +11,4 @@ backtrader
 yfinance
 tensorflow_decision_forests
 wurlitzer
+scikit-image
