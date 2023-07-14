@@ -1,0 +1,8 @@
+export dockertag=jgwill/ubuntu:20.04-node
+export containertag=ubnode16
+
+
+dkbuildprebuildscript=dkbuildprebuildscript.sh
+dkbuildbuildsuccessscript=dkbuildbuildsuccessscript.sh
+dkbuildfailedscript=dkbuildfailedscript.sh
+dkbuildpostbuildscript=dkbuildpostbuildscript.sh
