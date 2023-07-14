@@ -13,7 +13,8 @@ WORKDIR /work
 #RUN npm --version
 RUN \ 
  	npm install npm --g 
-	
+RUN npm i yarn --g
+
 RUN 	npm install tlid droxul http-server  --g
 RUN \
 	npm install \
@@ -24,11 +25,10 @@ RUN \
         json2bash   \
 	--g
 
-RUN \
-        npm install \
-        thumbsup \
-	yarn \
-	--g
+#RUN \
+#        npm install \
+#        thumbsup \
+#	--g
 
 
 
