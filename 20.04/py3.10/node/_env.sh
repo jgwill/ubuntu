@@ -1,4 +1,4 @@
-export dockertag=jgwill/ubuntu:20.04-py3.10.11-lzma-node
+export dockertag=jgwill/ubuntu:20.04-py3.10.13-lzma-node
 export containertag=ubpy310node16
 
 

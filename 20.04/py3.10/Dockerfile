@@ -1,7 +1,5 @@
-# syntax=docker/dockerfile:1.2
-
-
-FROM jgwill/ubuntu:20.04-py3.10.11-base-lzma
+#FROM jgwill/ubuntu:20.04-py3.10.11-base-lzma
+FROM jgwill/ubuntu:20.04-py3.10.13-base-lzma
 
 ENV DEBIAN_FRONTEND=noninteractive
 

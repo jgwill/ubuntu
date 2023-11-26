@@ -1,5 +1,6 @@
-export dockertag=jgwill/ubuntu:18.04-py3.10.13-ml-lzma
-#jgwill/ubuntu:18.04-py3.7.2-ml-lzma
+export dockertag=jgwill/ubuntu:20.04-py3.10.13-lzma-node-latest
+export containertag=ubpy310node-latest
+
 
 dkbuildprebuildscript=dkbuildprebuildscript.sh
 dkbuildbuildsuccessscript=dkbuildbuildsuccessscript.sh

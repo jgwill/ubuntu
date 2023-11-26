@@ -1,7 +1,5 @@
-# syntax=docker/dockerfile:1.2
-
 #FROM jgwill/ubuntu:18.04-py3.7.2-lzma
-FROM jgwill/ubuntu:20.04-py3.10.11-base-lzma
+FROM jgwill/ubuntu:20.04-py3.10.13-base-lzma
 ARG pip_parent=pip3.7
 ARG pip_cur=pip3.10
 ARG nodeversion=16.x

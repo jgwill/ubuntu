@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1.2
-
 FROM jgwill/ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -24,12 +22,12 @@ WORKDIR /tmpcache
 # rm -rf "Python-3.10.11"
 RUN \
     --mount=type=cache,target=/tmpcache \
-	if [ ! -e  "Python-3.10.11" ] ;then wget https://www.python.org/ftp/python/3.10.11/Python-3.10.11.tgz && tar -xf Python-3.10.11.tgz \
-	&& cd Python-3.10.11 && ./configure --enable-optimizations && \
+	if [ ! -e  "Python-3.10.13" ] ;then wget https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz && tar -xf Python-3.10.13.tgz \
+	&& cd Python-3.10.13 && ./configure --enable-optimizations && \
 	make -j 8 && make altinstall; \
 	else \
-		cd Python-3.10.11 && make altinstall ;fi && \ 
-	echo rm -rf Python-3.10.11 && echo Python-3.10.11.tgz 
+		cd Python-3.10.13 && make altinstall ;fi && \ 
+	echo rm -rf Python-3.10.13 && echo Python-3.10.13.tgz 
 	#ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3 && \
   #ln -sf /usr/local/bin/python3.7 /usr/local/bin/python && \
   #ln -sf /usr/local/bin/pip3.7 /usr/local/bin/pip

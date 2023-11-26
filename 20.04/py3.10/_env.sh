@@ -1,4 +1,4 @@
-export dockertag=jgwill/ubuntu:20.04-py3.10.11-lzma
+export dockertag=jgwill/ubuntu:20.04-py3.10.13-lzma
 
 
 
