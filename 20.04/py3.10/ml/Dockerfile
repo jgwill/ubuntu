@@ -1,10 +1,8 @@
-# syntax=docker/dockerfile:1.2
-
 #FROM jgwill/ubuntu:18.04-py3.7.2-lzma
-FROM jgwill/ubuntu:18.04-py3.7.2-lzma-node-tooled
+FROM jgwill/ubuntu:20.04-py3.10.13-lzma-node-latest
 ARG pip_parent=pip3.7
 ARG pip_cur=pip3.10
-ARG nodeversion=16.x
+ARG nodeversion=20.x
 
 #USER ubuntu
 #WORKDIR /__jgwillinstall
@@ -196,10 +194,10 @@ RUN \
 ##@URIR https://technical-analysis-library-in-python.readthedocs.io/en/latest/index.html
 ##@URIR https://python.plainenglish.io/a-simple-guide-to-plotly-for-plotting-financial-chart-54986c996682
 WORKDIR /repos
-COPY requirements.txt .
-RUN \
-    --mount=type=cache,target=/root/.cache \
-	pip install -r requirements.txt
+#COPY requirements.txt .
+#RUN \
+#    --mount=type=cache,target=/root/.cache \
+#	pip install -r requirements.txt
 
 
 #RUN --mount=type=cache,target=/root/.cache \
@@ -274,5 +272,20 @@ WORKDIR /svr/code-server
 RUN for x in $(code-server --list-extensions);do code-server --install-extension /admin $x --force;done
 #RUN cp ~/.config/code-server/config.yaml .
 WORKDIR /work
+
+#@STCIssue tfx not supporting python 3.10
+#@STCGoal Installed python package other than tfx we require
+RUN \
+    --mount=type=cache,target=/root/.cache \
+ 	pip install python-dotenv kaleido mplfinance 
+
+RUN \
+    --mount=type=cache,target=/root/.cache \
+        pip install scikit-learn shell-genie seaborn Sphinx poetry html2text dropbox fastapi_poe openai 
+
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+        DEBIAN_FRONTEND=noninteractive apt update && apt install -y luarocks python3-urllib3 python3-requests ssh-import-id  libc6-dbg && \
+         luarocks install http
 
 
