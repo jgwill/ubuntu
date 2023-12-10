@@ -104,6 +104,11 @@ WORKDIR /work
 #RUN $pip_cur install --upgrade pip
 RUN \
     --mount=type=cache,target=/var/cache/apt \
+	apt update && \
+	apt upgrade -y
+
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
 	apt install -y libfreetype6-dev graphviz default-jre ant
 
 #RUN --mount=type=cache,target=/root/.cache \
@@ -215,6 +220,8 @@ WORKDIR /repos
 #    --mount=type=cache,target=/root/.cache \
 #	$pip_cur  install ipykernel
 
+RUN echo "update-231209">> /_updated.txt
+
 # Code Server
 RUN \
     --mount=type=cache,target=/root/.cache \
@@ -288,4 +295,22 @@ RUN \
         DEBIAN_FRONTEND=noninteractive apt update && apt install -y luarocks python3-urllib3 python3-requests ssh-import-id  libc6-dbg && \
          luarocks install http
 
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+        apt update &&        apt -y install apt-transport-https ca-certificates gnupg curl
+RUN \
+    --mount=type=cache,target=/root/.cache \
+        pip install google-cloud-aiplatform
+
+#RUN \
+#    --mount=type=cache,target=/var/cache/apt \
+#        apt -y install apt-transport-https ca-certificates gnupg curl
+
+
+RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg && echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+RUN \
+ --mount=type=cache,target=/var/cache/apt \
+        apt update && apt install google-cloud-cli -y \
+        && apt autoremove -y
 
