@@ -8,3 +8,6 @@ dkbuildprebuildscript=dkbuildprebuildscript.sh
 dkbuildbuildsuccessscript=dkbuildbuildsuccessscript.sh
 dkbuildfailedscript=dkbuildfailedscript.sh
 dkbuildpostbuildscript=dkbuildpostbuildscript.sh
+
+unset DOCKER_BUILDKIT
+
