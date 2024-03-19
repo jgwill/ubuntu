@@ -1,6 +1,4 @@
-export dockertag=jgwill/ubuntu:20.04
-export containername=jgwillubuntu18
-export cur_python="py3.10.10"
+export dockertag=jgwill/ubuntu:22.04-py3.10-lzma
 
 
 
