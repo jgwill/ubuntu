@@ -1,7 +1,7 @@
 ctlid=2403191028
-dockertag=jgwill/server:mssql-22.04
+dockertag=jgwill/server:mssql-22.04-ml
 
-containername=mssql22
+containername=mssql22ml
 dkhostname=$containername
 
 # PORT

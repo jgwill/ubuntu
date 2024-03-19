@@ -44,4 +44,8 @@ RUN \
     --mount=type=cache,target=/var/cache/apt \
     apt update  && apt install -y mssql-server
     
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+    apt install systemctl -y
+    
 #&& apt-get install -y mssql-server
