@@ -121,7 +121,7 @@ RUN apt-get update
 
 RUN apt install nodejs -y
 
-
+RUN apt install net-tools -y
 
 
 WORKDIR /work
