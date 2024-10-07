@@ -9,3 +9,4 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN npm install -g flowise
 RUN chmod -R 777 /usr/lib/node_modules/flowise/logs/
 
+CMD ["npx", "flowise","start"]
