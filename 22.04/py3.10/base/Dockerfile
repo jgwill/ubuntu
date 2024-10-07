@@ -1,4 +1,7 @@
 FROM jgwill/ubuntu:22.04
+ARG PY_VER
+ARG PY_VER_BASE
+ARG TZ_NAME="America/New_York"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -19,20 +22,20 @@ RUN \
 #RUN apt update && apt install -y liblzma-dev lzma
 
 WORKDIR /tmpcache
-# rm -rf "Python-3.10.11"
+
 RUN \
     --mount=type=cache,target=/tmpcache \
-	if [ ! -e  "Python-3.10.13" ] ;then wget https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz && tar -xf Python-3.10.13.tgz \
-	&& cd Python-3.10.13 && ./configure --enable-optimizations && \
+	if [ ! -e  "Python-${PY_VER}" ] ;then wget https://www.python.org/ftp/python/${PY_VER}/Python-${PY_VER}.tgz && tar -xf Python-${PY_VER}.tgz \
+	&& cd Python-${PY_VER} && ./configure --enable-optimizations && \
 	make -j 8 && make altinstall; \
 	else \
-		cd Python-3.10.13 && make altinstall ;fi && \ 
-	echo rm -rf Python-3.10.13 && echo Python-3.10.13.tgz 
+		cd Python-${PY_VER} && make altinstall ;fi && \ 
+	echo rm -rf Python-${PY_VER} && echo Python-${PY_VER}.tgz 
 	#ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3 && \
   #ln -sf /usr/local/bin/python3.7 /usr/local/bin/python && \
   #ln -sf /usr/local/bin/pip3.7 /usr/local/bin/pip
-RUN update-alternatives --install /usr/bin/python python /usr/local/bin/python3.10 1
-RUN update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.10 1
+RUN update-alternatives --install /usr/bin/python python /usr/local/bin/python${PY_VER_BASE} 1
+RUN update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip${PY_VER_BASE} 1
 
 
 
@@ -40,7 +43,7 @@ WORKDIR /
 
 
 
-RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
+RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/${TZ_NAME} /etc/localtime
 
 
 RUN \

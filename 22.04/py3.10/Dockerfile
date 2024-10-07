@@ -1,6 +1,10 @@
 #FROM jgwill/ubuntu:20.04-py3.10.11-base-lzma
 #FROM jgwill/ubuntu:20.04-py3.10.13-base-lzma
-FROM jgwill/ubuntu:22.04-py3.10-base-lzma
+
+ARG PY_VER
+ARG PY_VER_BASE
+
+FROM jgwill/ubuntu:22.04-py${PY_VER}-base-lzma
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -122,6 +126,12 @@ RUN apt-get update
 RUN apt install nodejs -y
 
 RUN apt install net-tools -y
+
+RUN npm install -g npm@latest
+
+RUN npm i gia-ast@0.5.10 --g 
+
+RUN npm i -g thumbsup
 
 
 WORKDIR /work

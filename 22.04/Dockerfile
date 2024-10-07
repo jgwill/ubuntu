@@ -1,11 +1,10 @@
-
-
 FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /__jgwillinstall
 COPY build/jgw_optimize_docker_build.sh .
+RUN echo " ">>jgw_optimize_docker_build.sh
 RUN bash jgw_optimize_docker_build.sh
 WORKDIR /root
 RUN mkdir -p tmp 
@@ -37,16 +36,11 @@ RUN \
                        libnuma-dev \
                        libsss-nss-idmap-dev \
                        software-properties-common   \
-			iputils-ping net-tools dnsutils  markdown  dos2unix 
-#		apt remove python3.5 -y && \
-#      		apt remove python2.7 -y  && apt autoremove -y
-#RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2		
+			iputils-ping net-tools dnsutils iproute2 \
+			markdown  \
+			dos2unix \
+			imagemagick   exiftool  graphicsmagick
 
-
-#Remove python 3.5
-#RUN apt remove python3.5 -y && \
-#      apt remove python2.7 -y && \
-#      apt autoremove -y
 
 
 USER root

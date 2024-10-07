@@ -1,5 +1,5 @@
-export dockertag=jgwill/ubuntu:20.04
-export containername=jgwillubuntu18
+export dockertag=jgwill/ubuntu:22.04-slim
+export containername=jgwillubuntu22silm
 export cur_python="py3.10.10"
 
 
