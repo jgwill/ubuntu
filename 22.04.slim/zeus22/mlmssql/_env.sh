@@ -1,5 +1,6 @@
 ctlid=2403191028
-dockertag=jgwill/server:mssql-22.04-ml
+dockertag=jgwill/server:mssql-22.04-ml-slim
+. .env &>/dev/null 
 
 containername=mssql22ml
 dkhostname=$containername
@@ -12,7 +13,7 @@ xmount2=/opt/binscripts:/opt/binscripts
 
 
 dkcommand=bash #command to execute (default is the one in the dockerfile)
-
+dkcommand="/opt/mssql/bin/sqlservr --accept-eula"
 
 #@STCIssue for more see: https://learn.microsoft.com/en-us/sql/sql-server/install/configure-the-windows-firewall-to-allow-sql-server-access?view=sql-server-ver16
 _svc_broker=" -p 4022:4022 "
@@ -22,7 +23,14 @@ _transac_sql_and_integration_svc=" -p 1135:135 " #TSQL and The Integration Servi
 _analysis_svc=" -p 2383:2383 " #The standard port for the default instance of Analysis Services.
 _sql_browser=" -p 2382:2382 " #Client connection requests for a named instance of Analysis Services that don't specify a port number are directed to port 2382, the port on which SQL Server Browser listens. SQL Server Browser then redirects the request to the port that the named instance uses.
 _web_port=" -p 1080:80 " #web port
-dkextra=" -p 1434:1434 $_https_auth $_svc_broker $_transac_sql_and_integration_svc "
+
+_sa_password="P@ssw0rd"
+if [ "$SA_PASSWORD" == "" ]; then
+    SA_PASSWORD=$sa_password
+fi
+_sa_password=" -e 'SA_PASSWORD=$SA_PASSWORD' "
+
+dkextra=" -e ACCEPT_EULA=Y -p 1431:1431  -p 1434:1434 $_https_auth $_svc_broker $_transac_sql_and_integration_svc $_sa_password "
 #dkextra=" -v \$dworoot/x:/x -p 2288:2288 "
 
 #dkmounthome=true
@@ -30,9 +38,9 @@ dkextra=" -p 1434:1434 $_https_auth $_svc_broker $_transac_sql_and_integration_s
 
 ##########################
 ############# RUN MODE
-#dkrunmode="bg" #default fg
+dkrunmode="bg" #default fg
 #dkrestart="--restart" #default
-#dkrestarttype="unless-stopped" #default
+dkrestarttype="unless-stopped" #default
 
 
 #########################################
