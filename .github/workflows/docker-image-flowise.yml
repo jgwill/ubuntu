@@ -23,8 +23,8 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: 'pto-22.04/py3.10/flowise/Dockerfile'
-          push: true
-          tags: jgwill/server:flowise
+      with:
+        context: .
+        file: pto-22.04/py3.10/flowise/Dockerfile
+        push: true
+        tags: jgwill/server:flowise
