@@ -28,3 +28,5 @@ RUN \
 
 
 RUN npm install -g npm
+RUN npm install -g tlid tlidug
+
