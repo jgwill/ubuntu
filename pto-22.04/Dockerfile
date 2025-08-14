@@ -38,7 +38,8 @@ RUN \
                       iputils-ping net-tools dnsutils iproute2 \
                         markdown  \
                         dos2unix \
-                        imagemagick   exiftool  graphicsmagick  
+                        imagemagick   exiftool  graphicsmagick  \
+			neovim
 
 
 

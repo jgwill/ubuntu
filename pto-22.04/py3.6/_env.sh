@@ -8,12 +8,13 @@
 #    
 #fi
 . /a/src/ubuntu/pto-22.04/_env.sh|| $srcroot/ubuntu/pto-22.04/_env.sh
+. env-ubuntu-18.sh # we will override for ubuntu 18
 
 export PY_VER_BASE=3.6
 export PY_VER_BUMP=15
 export PY_VER=${PY_VER_BASE}.${PY_VER_BUMP}
 export dockertag4=jgwill/ubuntu:py${PY_VER_BASE}
-export dockertag3=jgwill/ubuntu:py
+#export dockertag3=jgwill/ubuntu:py
 export dockertag2=jgwill/ubuntu:$UBUNTU_VER-py$PY_VER_BASE-base-lzma
 export dockertag1=jgwill/ubuntu:$UBUNTU_VER-py$PY_VER_BASE-base
 export dockertag=jgwill/ubuntu:$UBUNTU_VER-py-base-${PY_VER}
