@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM jgwill/ubuntu:18.04
 ARG PY_VER=3.6.15
 ARG PY_VER_BASE=3.6
 ARG TZ_NAME="America/New_York"
