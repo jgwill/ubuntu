@@ -29,18 +29,24 @@ RUN \
 
 #-------------IMPORTED from 16x
 WORKDIR /tmpcache2
+#RUN \
+#    --mount=type=cache,target=/tmpcache2 \
+#         if [ ! -e  "node-v16.20.2.tar.gz" ] ;then  wget https://nodejs.org/download/release/latest-v16.x/node-v16.20.2.tar.gz ;fi && \ 
+#        if [ ! -d "src" ]; then mkdir -p src && cd src && tar xzf /tmpcache2/node-v16.20.2.tar.gz && \
+#                cd node-v16.20.2 && \
+#                        ./configure \
+#                                --with-intl=full-icu && \ 
+#                make -j8;fi && \
+#                cd /tmpcache2/src/node-v16.20.2 && make install
+#
 RUN \
-    --mount=type=cache,target=/tmpcache2 \
-         if [ ! -e  "node-v16.20.2.tar.gz" ] ;then  wget https://nodejs.org/download/release/latest-v16.x/node-v16.20.2.tar.gz ;fi && \ 
-        if [ ! -d "src" ]; then mkdir -p src && cd src && tar xzf /tmpcache2/node-v16.20.2.tar.gz && \
-                cd node-v16.20.2 && \
-                        ./configure \
-                                --with-intl=full-icu && \ 
-                make -j8;fi && \
-                cd /tmpcache2/src/node-v16.20.2 && make install
+        curl -sL https://deb.nodesource.com/setup_16.x -o /tmp/nodesource_setup.sh \
+        && bash /tmp/nodesource_setup.sh \
+        && apt install nodejs -y && \
+	apt install node-npm-bundled node-is-npm -y && apt clean
 
 
-RUN npm install -g npm
-RUN npm install -g tlid tlidug json2bash
-RUN npm install -g droxul
+#RUN npm install -g npm
+#RUN npm install -g tlid tlidug json2bash
+#RUN npm install -g droxul
 
