@@ -37,6 +37,11 @@ RUN \
                        libsss-nss-idmap-dev \
                        software-properties-common   \
 			iputils-ping net-tools dnsutils  markdown  dos2unix 
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+        DEBIAN_FRONTEND=noninteractive  apt -y install \
+                        imagemagick   exiftool  graphicsmagick  \
+                        neovim
 #		apt remove python3.5 -y && \
 #      		apt remove python2.7 -y  && apt autoremove -y
 #RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2		
