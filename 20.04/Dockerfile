@@ -37,7 +37,10 @@ RUN \
                        libnuma-dev \
                        libsss-nss-idmap-dev \
                        software-properties-common   \
-			iputils-ping net-tools dnsutils  markdown  dos2unix 
+			iputils-ping net-tools dnsutils  markdown  dos2unix \
+                        imagemagick   exiftool  graphicsmagick  \
+                        neovim
+
 #		apt remove python3.5 -y && \
 #      		apt remove python2.7 -y  && apt autoremove -y
 #RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2		
