@@ -31,13 +31,13 @@ RUN \
 WORKDIR /tmpcache2
 RUN \
     --mount=type=cache,target=/tmpcache2 \
-         if [ ! -e  "node-v18.20.8.tar.gz" ] ;then  wget https://nodejs.org/download/release/latest-v18.x/node-v18.20.8.tar.gz ;fi && \ 
-        if [ ! -d "src" ]; then mkdir -p src && cd src && tar xzf /tmpcache2/node-v18.20.8.tar.gz && \
-                cd node-v18.20.8 && \
+         if [ ! -e  "node-v16.20.2.tar.gz" ] ;then  wget https://nodejs.org/download/release/latest-v16.x/node-v16.20.2.tar.gz ;fi && \ 
+        if [ ! -d "src" ]; then mkdir -p src && cd src && tar xzf /tmpcache2/node-v16.20.2.tar.gz && \
+                cd node-v16.20.2 && \
                         ./configure \
                                 --with-intl=full-icu && \ 
                 make -j8;fi && \
-                cd /tmpcache2/src/node-v18.20.8 ; make install
+                cd /tmpcache2/src/node-v16.20.2 && make install
 
 
 RUN npm install -g npm
