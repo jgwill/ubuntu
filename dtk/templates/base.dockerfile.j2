@@ -1,0 +1,47 @@
+# Base Ubuntu Template
+# Generates equivalent to pto-22.04/Dockerfile
+ARG UBUNTU_VER={{ os_version }}
+FROM ubuntu:${UBUNTU_VER}
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+WORKDIR /__jgwillinstall
+COPY build/jgw_optimize_docker_build.sh .
+RUN echo " ">>jgw_optimize_docker_build.sh
+RUN bash jgw_optimize_docker_build.sh
+WORKDIR /root
+RUN mkdir -p tmp 
+
+# Update and upgrade with cache mount
+RUN \
+    --mount=type=cache,target=/var/cache/apt \ 
+ 	apt update && apt upgrade -y
+
+# Install essential packages
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+	DEBIAN_FRONTEND=noninteractive  apt -y install \
+	vim git curl zip unzip \
+   wget bzip2\
+   sudo \ 
+   gnupg2  \
+    apt-transport-https  \
+   ffmpeg libimage-exiftool-perl \
+	lsb-release  \
+     			supervisor \
+                       fakechroot \
+                       locales \
+                       iptables \
+                       make \
+                       m4 \
+                       tzdata \
+                       libnuma-dev \
+                       libsss-nss-idmap-dev \
+                       software-properties-common   \
+                      iputils-ping net-tools dnsutils iproute2 \
+                        markdown  \
+                        dos2unix \
+                        imagemagick   exiftool  graphicsmagick  \
+			neovim
+
+USER root

@@ -1,0 +1,87 @@
+# Docker Template Kit Build Matrix Configuration
+# Supports multiple OS versions and Python versions with layer dependencies
+
+os_versions:
+  - "22.04"
+  - "20.04" 
+  - "24.04"
+
+python_versions:
+  - version: "3.10"
+    bump: "17"
+    compilation_method: "source"  # Compile from source
+    base_os: "22.04"
+  - version: "3.11"
+    bump: "10"
+    compilation_method: "source"
+    base_os: "22.04"
+  - version: "3.6"
+    bump: "15"
+    compilation_method: "package"  # Use system packages
+    base_os: "18.04"  # py3.6 requires Ubuntu 18.04 compatibility
+
+# Build layer definitions with dependencies
+build_layers:
+  # Base Ubuntu layer
+  - name: "base"
+    template: "base.dockerfile.j2"
+    depends_on: null
+    tags: 
+      - "jgwill/ubuntu:${os_version}"
+      - "jgwill/ubuntu:${os_major}"
+      - "jgwill/ubuntu:latest"
+
+  # Python runtime layer
+  - name: "python"
+    template: "python.dockerfile.j2" 
+    depends_on: "base"
+    tags:
+      - "jgwill/ubuntu:${os_version}-py${python_version}-base"
+      - "jgwill/ubuntu:py${python_version}"
+
+  # Node.js integration layer
+  - name: "node"
+    template: "node.dockerfile.j2"
+    depends_on: "python"
+    tags:
+      - "jgwill/ubuntu:${os_version}-py${python_version}-node"
+      - "jgwill/ubuntu:py${python_version}-node"
+
+  # ML tooled development environment
+  - name: "ml-tooled"
+    template: "ml-tooled.dockerfile.j2"
+    depends_on: "node"
+    tags:
+      - "jgwill/ubuntu:${os_version}-py${python_version}-ml"
+      - "jgwill/ubuntu:py${python_version}-ml"
+
+# Build sequences (equivalent to build-stack.sh)
+build_sequences:
+  # Primary sequence: base → py3.10 → node → ml-tooled
+  - name: "modern-stack"
+    description: "Modern Python 3.10+ with ML tooling"
+    os_versions: ["22.04", "20.04", "24.04"]
+    python_versions: ["3.10", "3.11"]
+    layers: ["base", "python", "node", "ml-tooled"]
+
+  # Legacy sequence: base → py3.6 → node (for coaiapy)
+  - name: "legacy-stack" 
+    description: "Legacy Python 3.6 for coaiapy compatibility"
+    os_versions: ["22.04"]  # Build on 22.04 but use 18.04 base
+    python_versions: ["3.6"]
+    layers: ["base", "python", "node"]
+
+# Global build configuration
+build_config:
+  timezone: "America/New_York"
+  registry: "jgwill"
+  cache_mounts:
+    apt: "/var/cache/apt"
+    pip: "/root/.cache"
+    npm: "/root/.npm"
+    compile: "/tmpcache"
+  
+  # Build optimization
+  buildkit_enabled: true
+  parallel_builds: true
+  cache_registry: true

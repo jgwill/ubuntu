@@ -1,0 +1,66 @@
+# Node.js Integration Template  
+# Handles different Node.js installation methods based on Python version
+{% if python_config.version == "3.6" %}
+ARG UBUNTU_VER={{ python_config.base_os }}
+FROM jgwill/ubuntu:py3.6
+{% else %}
+ARG UBUNTU_VER={{ os_version }}
+FROM jgwill/ubuntu:py
+{% endif %}
+
+ARG TZ_NAME="{{ build_config.timezone }}"
+{% if python_config.version == "3.6" %}
+ARG pip_cur=pip3.6
+ARG nodeversion=16.x
+{% else %}
+ARG pip_cur=pip{{ python_config.version }}
+ARG nodeversion=20.x
+{% endif %}
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Set timezone
+RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/${TZ_NAME} /etc/localtime
+
+WORKDIR /work
+
+{% if python_config.version == "3.6" %}
+# Python 3.6 specific Node.js installation (Node 16.x)
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+        DEBIAN_FRONTEND=noninteractive apt update && \
+        apt install -y ca-certificates curl gnupg
+
+# Install Node.js 16.x for Python 3.6 compatibility
+RUN \
+        curl -sL https://deb.nodesource.com/setup_16.x -o /tmp/nodesource_setup.sh \
+        && bash /tmp/nodesource_setup.sh \
+        && apt install nodejs -y && \
+	apt install node-npm-bundled node-is-npm -y && apt clean
+
+{% else %}
+# Modern Python versions (3.10+) Node.js installation
+# Install Node.js using NodeSource repository
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+        DEBIAN_FRONTEND=noninteractive apt update && \
+        apt install -y ca-certificates curl gnupg && \
+        mkdir -p /etc/apt/keyrings && \
+        curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key |  gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+        echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+        DEBIAN_FRONTEND=noninteractive apt update && \
+        apt install -y nodejs
+
+# Install global Node.js packages
+RUN npm install -g npm
+RUN npm install -g tlid tlidug json2bash
+RUN npm install -g droxul
+{% endif %}
+
+WORKDIR /work
