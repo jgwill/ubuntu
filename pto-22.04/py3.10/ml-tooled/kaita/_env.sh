@@ -1,5 +1,7 @@
 ctlid=2403230740
 dockertag=jgwill/server:kaita
+dockertag1=jgwill/ubuntu:py3.10.17-ml-kaita
+dockertag2=jgwill/ubuntu:kaita
 
 containername=kaita
 dkhostname=$containername
