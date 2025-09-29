@@ -30,4 +30,6 @@ RUN \
 RUN npm install -g npm
 RUN npm install -g tlid tlidug json2bash
 RUN npm install -g droxul
+RUN npm install -g pnpm
+
 

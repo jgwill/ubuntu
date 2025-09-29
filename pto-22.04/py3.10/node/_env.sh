@@ -13,6 +13,7 @@
 #export dockertag2=jgwill/ubuntu:$UBUNTU_VER-node-2404
 export dockertag1=jgwill/ubuntu:py-node
 export dockertag2=jgwill/ubuntu:node-py
+unset dockertag3
 export dockertag=jgwill/ubuntu:22-py-node
 
 export TZ_NAME="America/New_York"
