@@ -39,7 +39,8 @@ RUN \
                         markdown  \
                         dos2unix \
                         imagemagick   exiftool  graphicsmagick  \
-			neovim
+			neovim \
+			uuid-runtime
 
 
 
