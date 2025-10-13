@@ -40,7 +40,8 @@ RUN \
                         dos2unix \
                         imagemagick   exiftool  graphicsmagick  \
 			neovim \
-			uuid-runtime
+			uuid-runtime \
+			jq
 
 
 
