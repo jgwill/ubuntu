@@ -10,7 +10,7 @@
 . /a/src/ubuntu/pto-22.04/_env.sh|| $srcroot/ubuntu/pto-22.04/_env.sh
 
 export PY_VER_BASE=3.11
-export PY_VER=${PY_VER_BASE}.13
+export PY_VER=${PY_VER_BASE}.15
 export dockertag4=jgwill/ubuntu:py${PY_VER_BASE}
 export dockertag3=jgwill/ubuntu:py-future
 export dockertag2=jgwill/ubuntu:$UBUNTU_VER-py$PY_VER_BASE-base-lzma
