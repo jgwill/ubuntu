@@ -35,7 +35,9 @@ RUN \
   #ln -sf /usr/local/bin/python3.7 /usr/local/bin/python && \
   #ln -sf /usr/local/bin/pip3.7 /usr/local/bin/pip
 RUN update-alternatives --install /usr/bin/python python /usr/local/bin/python${PY_VER_BASE} 1
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python${PY_VER_BASE} 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip${PY_VER_BASE} 1
+RUN update-alternatives --install /usr/bin/pip3 pip3 /usr/local/bin/pip${PY_VER_BASE} 1
 
 
 

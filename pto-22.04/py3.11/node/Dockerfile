@@ -32,4 +32,29 @@ RUN npm install -g tlid tlidug json2bash
 RUN npm install -g droxul
 RUN npm install -g pnpm
 
+# -----------------------------------------------------------------------------
+# Bun (system-wide). BUN_INSTALL=/usr/local places the binary in /usr/local/bin
+# so it is on PATH for every RUN step, every user, and every runtime shell.
+# -----------------------------------------------------------------------------
+ENV BUN_INSTALL="/usr/local"
+ENV PATH="/usr/local/bin:${PATH}"
+RUN curl -fsSL https://bun.sh/install | bash && bun --version
+
+# -----------------------------------------------------------------------------
+# @tobilu/qmd pre-baked with native modules compiled against THIS image's Node
+# ABI. build-essential + libsqlite3-dev are inherited from jgwill/ubuntu:py3.11;
+# the python3 alias is also set there, so node-gyp finds its toolchain.
+#
+# --build-from-source + explicit `npm rebuild better-sqlite3 --build-from-source`
+# guarantee no prebuilt ABI mismatch downstream (see tobi/qmd better-sqlite3
+# NODE_MODULE_VERSION failure when the prebuilt targeted a different Node).
+# The `node -e require('better-sqlite3')` smoke test fails the build loudly
+# instead of silently shipping a broken image.
+# -----------------------------------------------------------------------------
+RUN npm install -g @tobilu/qmd --build-from-source \
+ && cd /usr/lib/node_modules/@tobilu/qmd \
+ && npm rebuild better-sqlite3 --build-from-source \
+ && node -e "require('better-sqlite3'); console.log('better-sqlite3 OK')" \
+ && qmd --help >/dev/null 2>&1 && echo "qmd CLI OK"
+
 
