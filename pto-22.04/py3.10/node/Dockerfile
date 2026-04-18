@@ -31,5 +31,6 @@ RUN npm install -g npm
 RUN npm install -g tlid tlidug json2bash
 RUN npm install -g droxul
 RUN npm install -g pnpm
+RUN npx ctx7 skills install /jgwill/llms-txt -y
 
 
